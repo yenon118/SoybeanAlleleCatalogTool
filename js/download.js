@@ -162,8 +162,6 @@ function downloadAllByMultipleGenes(dataset, genes) {
             let res = JSON.parse(response);
             res = res.data;
 
-            console.log(res);
-
             if (res.length > 0) {
                 let csvString = convertJsonToCsv(res);
                 createAndDownloadCsvFile(csvString, dataset + "__" + genes.join("_") + "__data");
