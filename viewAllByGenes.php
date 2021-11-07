@@ -33,6 +33,8 @@ COUNT(IF(Improvement_Status IN ('Cultivar', 'Elite'), 1, null)) AS Cultivar,
 COUNT(IF(Improvement_Status = 'Landrace', 1, null)) AS Landrace, 
 COUNT(IF(Improvement_Status IN ('G. soja', 'Cultivar', 'Elite', 'Landrace', 'Genetic'), 1, null)) AS Total, 
 COUNT(IF(Classification = 'NA Cultivar', 1, null)) AS NA_Cultivar, 
+COUNT(IF(Imputation = '+', 1, null)) AS Imputed, 
+COUNT(IF(Imputation = '-', 1, null)) AS Unimputed, 
 Gene, Position, Genotype, Genotype_with_Description 
 FROM " . $dataset . " 
 WHERE (Gene IN (" . str_repeat('?, ',  count($gene_arr) - 1) . '?' . ")) 
@@ -179,6 +181,6 @@ if (count($result_arr) > 0) {
 <script type="text/javascript" language="javascript" src="./js/getAccessionsByImpStatusGenePositionGenotypeDesc.js"></script>
 <script type="text/javascript" language="javascript" src="./js/download.js"></script>
 <script type="text/javascript" language="javascript" src="./js/modal.js"></script>
-<script type="text/javascript" language="javascript" src="./js/checkbox_highlight.js"></script>
+<script type="text/javascript" language="javascript" src="./js/checkboxHighlight.js"></script>
 
 <?php include '../footer.php'; ?>

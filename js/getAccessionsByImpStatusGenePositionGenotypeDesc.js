@@ -14,13 +14,18 @@ function constructInfoTable(arr) {
     // Put header into the modal
     let th_keys = Object.keys(arr[0]);
     for (let i = 0; i < th_keys.length; i++) {
-        if (th_keys[i] !== "Position" && th_keys[i] !== "Genotype" && th_keys[i] !== "Genotype_with_Description") {
+        if (th_keys[i] !== "Position" && th_keys[i] !== "Genotype" && th_keys[i] !== "Genotype_with_Description" && th_keys[i] !== "Imputation") {
             document.getElementById('modal-content-table-head').innerHTML += "<th style=\"min-width:80px;text-align:center\">" + th_keys[i] + "</th>";
         }
     }
     position_arr = String(arr[0]['Position']).split(" ");
     for (let i = 0; i < position_arr.length; i++) {
         document.getElementById('modal-content-table-head').innerHTML += "<th style=\"min-width:80px;text-align:center\">" + position_arr[i] + "</th>";
+    }
+    for (let i = 0; i < th_keys.length; i++) {
+        if (th_keys[i] === "Imputation") {
+            document.getElementById('modal-content-table-head').innerHTML += "<th style=\"min-width:80px;text-align:center\">" + th_keys[i] + "</th>";
+        }
     }
 
     // Put body into the modal
@@ -33,7 +38,7 @@ function constructInfoTable(arr) {
         let tr_keys = Object.keys(arr[i]);
 
         for (let j = 0; j < tr_keys.length; j++) {
-            if (tr_keys[j] !== "Position" && tr_keys[j] !== "Genotype" && tr_keys[j] !== "Genotype_with_Description") {
+            if (tr_keys[j] !== "Position" && tr_keys[j] !== "Genotype" && tr_keys[j] !== "Genotype_with_Description" && tr_keys[j] !== "Imputation") {
                 document.getElementById(modal_content_table_data_id).innerHTML += "<td style=\"min-width:80px;text-align:left\">" + ((arr[i][tr_keys[j]] === null) ? "" : arr[i][tr_keys[j]]) + "</td>";
             }
         }
@@ -69,6 +74,11 @@ function constructInfoTable(arr) {
                 }
             }
         }
+        for (let j = 0; j < tr_keys.length; j++) {
+            if (tr_keys[j] === "Imputation") {
+                document.getElementById(modal_content_table_data_id).innerHTML += "<td style=\"min-width:80px;text-align:center\">" + ((arr[i][tr_keys[j]] === null) ? "" : arr[i][tr_keys[j]]) + "</td>";
+            }
+        }
     }
 
     document.getElementById("modal-content-comment").innerHTML = "<p>Total number of samples: " + arr.length + "</p>";
@@ -76,6 +86,8 @@ function constructInfoTable(arr) {
 
 
 function getAccessionsByImpStatusGenePositionGenotypeDesc(dataset, key, gene, position, genotypeWithDescription) {
+
+    console.log(key);
 
     $.ajax({
         url: './php/getAccessionsByImpStatusGenePositionGenotypeDesc.php',

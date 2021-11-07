@@ -11,7 +11,7 @@ $genotypeWithDescription = $_GET['GenotypeWithDescription'];
 
 if(preg_match("/na.cultivar/i", strval($key))){
     $query_str = "
-        SELECT Classification, Improvement_Status, Maturity_Group, Country, State, Accession, Gene, Position, Genotype, Genotype_with_Description 
+        SELECT Classification, Improvement_Status, Maturity_Group, Country, State, Accession, Gene, Position, Genotype, Genotype_with_Description, Imputation 
         FROM soykb." . $dataset . "
         WHERE (Gene IN (?))
         AND Position = ?
@@ -21,7 +21,7 @@ if(preg_match("/na.cultivar/i", strval($key))){
     ";
 } else if(preg_match("/soja/i", strval($key))){
     $query_str = "
-        SELECT Classification, Improvement_Status, Maturity_Group, Country, State, Accession, Gene, Position, Genotype, Genotype_with_Description 
+        SELECT Classification, Improvement_Status, Maturity_Group, Country, State, Accession, Gene, Position, Genotype, Genotype_with_Description, Imputation 
         FROM soykb." . $dataset . "
         WHERE (Gene IN (?))
         AND Position = ?
@@ -30,7 +30,7 @@ if(preg_match("/na.cultivar/i", strval($key))){
     ";
 } else if(preg_match("/cultivar/i", strval($key))){
     $query_str = "
-        SELECT Classification, Improvement_Status, Maturity_Group, Country, State, Accession, Gene, Position, Genotype, Genotype_with_Description 
+        SELECT Classification, Improvement_Status, Maturity_Group, Country, State, Accession, Gene, Position, Genotype, Genotype_with_Description, Imputation 
         FROM soykb." . $dataset . "
         WHERE (Gene IN (?))
         AND Position = ?
@@ -40,7 +40,7 @@ if(preg_match("/na.cultivar/i", strval($key))){
     ";
 } else if(preg_match("/landrace/i", strval($key))){
     $query_str = "
-        SELECT Classification, Improvement_Status, Maturity_Group, Country, State, Accession, Gene, Position, Genotype, Genotype_with_Description 
+        SELECT Classification, Improvement_Status, Maturity_Group, Country, State, Accession, Gene, Position, Genotype, Genotype_with_Description, Imputation 
         FROM soykb." . $dataset . "
         WHERE (Gene IN (?))
         AND Position = ?
@@ -50,11 +50,31 @@ if(preg_match("/na.cultivar/i", strval($key))){
     ";
 } else if(preg_match("/total/i", strval($key))){
     $query_str = "
-        SELECT Classification, Improvement_Status, Maturity_Group, Country, State, Accession, Gene, Position, Genotype, Genotype_with_Description 
+        SELECT Classification, Improvement_Status, Maturity_Group, Country, State, Accession, Gene, Position, Genotype, Genotype_with_Description, Imputation 
         FROM soykb." . $dataset . "
         WHERE (Gene IN (?))
         AND Position = ?
         AND Genotype_with_Description = ?
+        ORDER BY Accession;
+    ";
+} else if(preg_match("/unimputed/i", strval($key))){
+    $query_str = "
+        SELECT Classification, Improvement_Status, Maturity_Group, Country, State, Accession, Gene, Position, Genotype, Genotype_with_Description, Imputation 
+        FROM soykb." . $dataset . "
+        WHERE (Gene IN (?))
+        AND Position = ?
+        AND Genotype_with_Description = ?
+        AND Imputation = '-'
+        ORDER BY Accession;
+    ";
+} else if(preg_match("/imputed/i", strval($key))){
+    $query_str = "
+        SELECT Classification, Improvement_Status, Maturity_Group, Country, State, Accession, Gene, Position, Genotype, Genotype_with_Description, Imputation 
+        FROM soykb." . $dataset . "
+        WHERE (Gene IN (?))
+        AND Position = ?
+        AND Genotype_with_Description = ?
+        AND Imputation = '+'
         ORDER BY Accession;
     ";
 }

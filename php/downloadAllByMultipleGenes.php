@@ -21,7 +21,7 @@ if (isset($genes) && !empty($genes) && !is_null($genes) && isset($dataset) && !e
     }
 
     $query_str = "
-        SELECT Classification, Improvement_Status, Maturity_Group, Country, State, Accession, Gene, Position, Genotype, Genotype_with_Description
+        SELECT Classification, Improvement_Status, Maturity_Group, Country, State, Accession, Gene, Position, Genotype, Genotype_with_Description, Imputation
         FROM soykb." . $dataset . "
         WHERE (Gene IN (" . str_repeat('?, ',  count($gene_arr) - 1) . '?' . "));
     ";

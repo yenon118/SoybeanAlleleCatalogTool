@@ -22,7 +22,7 @@ if (isset($gene) && !empty($gene) && !is_null($gene) && isset($accessions) && !e
     }
 
     $query_str = "
-        SELECT Classification, Improvement_Status, Maturity_Group, Country, State, Accession, Gene, Position, Genotype, Genotype_with_Description
+        SELECT Classification, Improvement_Status, Maturity_Group, Country, State, Accession, Gene, Position, Genotype, Genotype_with_Description, Imputation
         FROM soykb." . $dataset . "
         WHERE ((Accession IN (" . str_repeat('?, ',  count($accession_arr) - 1) . '?' . ")) AND (Gene = '".$gene."'));
     ";
