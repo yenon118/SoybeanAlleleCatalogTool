@@ -24,6 +24,34 @@ for ($i = 0; $i < count($accession_arr); $i++) {
 
 <!-- Query data from database -->
 <?php
+
+// Check GRIN accession mapping
+$query_str = "
+SELECT Accession, GRIN_Accession FROM soykb.Soybean_Allele_Catalog_Accession_Mapping
+WHERE (GRIN_Accession IN (" . str_repeat('?, ',  count($accession_arr) - 1) . '?' . "));
+";
+
+$stmt = $PDO->prepare($query_str);
+for ($i = 0; $i < count($accession_arr); $i++) {
+    $stmt->bindValue(($i + 1), trim($accession_arr[$i]), PDO::PARAM_STR);
+}
+$stmt->execute();
+$result = $stmt->fetchAll();
+
+if (count($result) > 0) {
+    $result_arr = pdoResultFilter($result);
+}
+
+if (count($result_arr) > 0) {
+    for ($i = 0; $i < count($result_arr); $i++) {
+        if (!in_array($result_arr[$i]['Accession'], $accession_arr)) {
+            array_push($accession_arr, $result_arr[$i]['Accession']);
+        }
+
+    }
+}
+
+// Query data
 $query_str = "
 SELECT Classification, Improvement_Status, Maturity_Group, Country, State, Accession, Gene, Position, Genotype, Genotype_with_Description, Imputation
 FROM soykb." . $dataset . "
