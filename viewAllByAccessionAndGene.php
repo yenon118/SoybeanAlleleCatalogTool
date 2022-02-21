@@ -17,7 +17,7 @@ for ($i = 0; $i < count($accession_arr); $i++) {
 ?>
 
 <!-- Back button -->
-<a href="search.php"><button> &lt; Back </button></a>
+<a href="/SoybeanAlleleCatalogTool/"><button> &lt; Back </button></a>
 
 <br />
 <br />
