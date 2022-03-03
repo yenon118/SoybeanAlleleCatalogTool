@@ -173,7 +173,7 @@ if (count($result_arr) > 0) {
 
     echo "<br/><br/>";
     echo "<div style='margin-top:10px;' align='center'>";
-    echo "<button type=\"submit\" onclick=\"window.open('https://de.cyverse.org/dl/d/B0365415-CEF8-4F6C-A242-39C01198EC6F/Accession_Info.csv')\" style=\"margin-right:20px;\">Download Accession Information</button>";
+    echo "<button type=\"submit\" onclick=\"window.open('https://data.cyverse.org/dav-anon/iplant/home/soykb/Soy1066/Accession_Info.csv')\" style=\"margin-right:20px;\">Download Accession Information</button>";
     echo "</div>";
     echo "<br/><br/>";
 }

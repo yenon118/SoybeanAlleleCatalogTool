@@ -55,7 +55,7 @@ include '../header.php';
 </div>
 
 <div style='margin-top:10px;' align='center'>
-    <button type="submit" onclick="window.open('https://de.cyverse.org/dl/d/B0365415-CEF8-4F6C-A242-39C01198EC6F/Accession_Info.csv')" style="margin-right:20px;">Download Accession Information</button>
+    <button type="submit" onclick="window.open('https://data.cyverse.org/dav-anon/iplant/home/soykb/Soy1066/Accession_Info.csv')" style="margin-right:20px;">Download Accession Information</button>
 </div>
 
 <script type="text/javascript" language="javascript">
