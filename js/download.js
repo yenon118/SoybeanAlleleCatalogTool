@@ -65,7 +65,8 @@ function createAndDownloadCsvFile(csvString, filename) {
 }
 
 
-function downloadAllCountsByGene(dataset, gene) {
+function downloadAllCountsByGene(dataset, gene, checkboxes) {
+    checkboxes = checkboxes.split(";");
 
     $.ajax({
         url: 'php/downloadAllCountsByGene.php',
@@ -73,7 +74,8 @@ function downloadAllCountsByGene(dataset, gene) {
         contentType: 'application/json',
         data: {
             Gene: gene,
-            Dataset: dataset
+            Dataset: dataset,
+            Checkboxes: checkboxes
         },
         success: function (response) {
             let res = JSON.parse(response);
@@ -92,7 +94,8 @@ function downloadAllCountsByGene(dataset, gene) {
 }
 
 
-function downloadAllByGene(dataset, gene) {
+function downloadAllByGene(dataset, gene, checkboxes) {
+    checkboxes = checkboxes.split(";");
 
     $.ajax({
         url: 'php/downloadAllByGene.php',
@@ -100,7 +103,8 @@ function downloadAllByGene(dataset, gene) {
         contentType: 'application/json',
         data: {
             Gene: gene,
-            Dataset: dataset
+            Dataset: dataset,
+            Checkboxes: checkboxes
         },
         success: function (response) {
             let res = JSON.parse(response);
@@ -119,8 +123,9 @@ function downloadAllByGene(dataset, gene) {
 }
 
 
-function downloadAllCountsByMultipleGenes(dataset, genes) {
+function downloadAllCountsByMultipleGenes(dataset, genes, checkboxes) {
     genes = genes.split(";");
+    checkboxes = checkboxes.split(";");
 
     $.ajax({
         url: 'php/downloadAllCountsByMultipleGenes.php',
@@ -128,7 +133,8 @@ function downloadAllCountsByMultipleGenes(dataset, genes) {
         contentType: 'application/json',
         data: {
             Genes: genes,
-            Dataset: dataset
+            Dataset: dataset,
+            Checkboxes: checkboxes
         },
         success: function (response) {
             let res = JSON.parse(response);
@@ -147,8 +153,9 @@ function downloadAllCountsByMultipleGenes(dataset, genes) {
 }
 
 
-function downloadAllByMultipleGenes(dataset, genes) {
+function downloadAllByMultipleGenes(dataset, genes, checkboxes) {
     genes = genes.split(";");
+    checkboxes = checkboxes.split(";");
 
     $.ajax({
         url: 'php/downloadAllByMultipleGenes.php',
@@ -156,7 +163,8 @@ function downloadAllByMultipleGenes(dataset, genes) {
         contentType: 'application/json',
         data: {
             Genes: genes,
-            Dataset: dataset
+            Dataset: dataset,
+            Checkboxes: checkboxes
         },
         success: function (response) {
             let res = JSON.parse(response);

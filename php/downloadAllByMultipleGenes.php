@@ -5,6 +5,7 @@ include 'pdoResultFilter.php';
 
 $genes = $_GET['Genes'];
 $dataset = $_GET['Dataset'];
+$checkboxes = $_GET['Checkboxes'];
 
 $result_arr = array();
 
@@ -16,20 +17,34 @@ if (isset($genes) && !empty($genes) && !is_null($genes) && isset($dataset) && !e
     } else {
         exit(0);
     }
+    if (is_string($checkboxes)) {
+        $checkboxes = preg_split("/[;, \n]+/", trim($checkboxes));
+    } elseif (is_array($checkboxes)) {
+        $checkboxes = $checkboxes;
+    } else {
+        exit(0);
+    }
     for ($i = 0; $i < count($gene_arr); $i++) {
         $gene_arr[$i] = trim($gene_arr[$i]);
+    }
+    for ($i = 0; $i < count($checkboxes); $i++) {
+        $checkboxes[$i] = trim($checkboxes[$i]);
     }
 
     $query_str = "
         SELECT Classification, Improvement_Status, Maturity_Group, Country, State, Accession, Gene, Position, Genotype, Genotype_with_Description, Imputation
         FROM soykb." . $dataset . "
-        WHERE (Gene IN (" . str_repeat('?, ',  count($gene_arr) - 1) . '?' . "));
-    ";
+        WHERE ((Gene IN ('";
+    for ($i = 0; $i < count($gene_arr); $i++) {
+        if($i < (count($gene_arr)-1)){
+            $query_str = $query_str . trim($gene_arr[$i]) . "', '";
+        } elseif ($i == (count($gene_arr)-1)) {
+            $query_str = $query_str . trim($gene_arr[$i]);
+        }
+    }
+    $query_str = $query_str . "')));";
 
     $stmt = $PDO->prepare($query_str);
-    for ($i = 0; $i < count($gene_arr); $i++) {
-        $stmt->bindValue(($i + 1), trim($gene_arr[$i]), PDO::PARAM_STR);
-    }
     $stmt->execute();
     $result = $stmt->fetchAll();
 

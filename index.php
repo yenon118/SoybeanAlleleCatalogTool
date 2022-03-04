@@ -20,6 +20,39 @@ include '../header.php';
                     <b>Gene name</b><span>&nbsp;(eg Glyma.01G049100 Glyma.01G049200 Glyma.01G049300)</span>
                     <br />
                     <textarea id="gene1" name="gene1" rows="12" cols="50" placeholder="&#10;Please separate each gene into a new line. &#10;&#10;Example:&#10;Glyma.01g049100&#10;Glyma.01g049200&#10;Glyma.01g049300"></textarea>
+                    <br />
+                    <br />
+                    <table>
+                        <tr>
+                            <td style="min-width:100px">
+                                <input type="checkbox" id="Soja" name="Soja" value="Soja" checked>
+                                <label for="Soja">Soja</label>
+                            </td>
+                            <td style="min-width:100px">
+                                <input type="checkbox" id="Cultivar" name="Cultivar" value="Cultivar" checked>
+                                <label for="Cultivar">Cultivar</label>
+                            </td>
+                            <td style="min-width:100px">
+                                <input type="checkbox" id="Landrace" name="Landrace" value="Landrace" checked>
+                                <label for="Landrace">Landrace</label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="min-width:100px">
+                                <input type="checkbox" id="NA_Cultivar" name="NA_Cultivar" value="NA_Cultivar" checked>
+                                <label for="NA_Cultivar">NA Cultivar</label>
+                            </td>
+                            <td style="min-width:100px">
+                                <input type="checkbox" id="Imputed" name="Imputed" value="Imputed" checked>
+                                <label for="Imputed">Imputed</label>
+                            </td>
+                            <td style="min-width:100px">
+                                <input type="checkbox" id="Unimputed" name="Unimputed" value="Unimputed" checked>
+                                <label for="Unimputed">Unimputed</label>
+                            </td>
+                        </tr>
+                    </table>
+                    <br />
                     <br /><br />
                     <input type="submit" value="Search">
                 </form>
@@ -37,11 +70,12 @@ include '../header.php';
                     <br />
                     <b>Accession</b><span>&nbsp;(eg HN052_PI424079 PI_479752)</span>
                     <br />
-                    <textarea id="accession" name="accession" rows="9" cols="50" placeholder="&#10;Please separate each accession into a new line. &#10;&#10;Example:&#10;HN052_PI424079&#10;PI_479752"></textarea>
+                    <textarea id="accession" name="accession" rows="12" cols="50" placeholder="&#10;Please separate each accession into a new line. &#10;&#10;Example:&#10;HN052_PI424079&#10;PI_479752"></textarea>
                     <br /><br />
                     <b>Gene name</b><span>&nbsp;(One gene name only; eg Glyma.01G049100)</span>
                     <br />
                     <input type="text" id="gene2" name="gene2" size="53"></input>
+                    <br /><br />
                     <br /><br />
                     <input type="submit" value="Search">
                 </form>

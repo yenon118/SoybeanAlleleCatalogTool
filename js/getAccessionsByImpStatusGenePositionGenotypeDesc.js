@@ -86,9 +86,6 @@ function constructInfoTable(arr) {
 
 
 function getAccessionsByImpStatusGenePositionGenotypeDesc(dataset, key, gene, position, genotypeWithDescription) {
-
-    console.log(key);
-
     $.ajax({
         url: './php/getAccessionsByImpStatusGenePositionGenotypeDesc.php',
         type: 'GET',
