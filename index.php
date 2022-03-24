@@ -7,7 +7,7 @@ include '../header.php';
     <table width="100%" cellspacing="14" cellpadding="14">
         <tr>
             <td width="50%" align="center" valign="top" style="border:1px solid #999999; padding:10px; background-color:#f8f8f8; text-align:left;">
-                <form action="viewAllByGenes.php" method="get">
+                <form action="viewAllByGenes.php" method="get" target="_blank">
                     <h2>Search By Gene Name</h2>
                     <br />
                     <label for="dataset1"><b>Dataset:</b></label>
@@ -29,8 +29,8 @@ include '../header.php';
                                 <label for="Soja">Soja</label>
                             </td>
                             <td style="min-width:100px">
-                                <input type="checkbox" id="Cultivar" name="Cultivar" value="Cultivar" checked>
-                                <label for="Cultivar">Cultivar</label>
+                                <input type="checkbox" id="Elite" name="Elite" value="Elite" checked>
+                                <label for="Elite">Elite</label>
                             </td>
                             <td style="min-width:100px">
                                 <input type="checkbox" id="Landrace" name="Landrace" value="Landrace" checked>
@@ -39,8 +39,8 @@ include '../header.php';
                         </tr>
                         <tr>
                             <td style="min-width:100px">
-                                <input type="checkbox" id="NA_Cultivar" name="NA_Cultivar" value="NA_Cultivar" checked>
-                                <label for="NA_Cultivar">NA Cultivar</label>
+                                <input type="checkbox" id="Cultivar" name="Cultivar" value="Cultivar" checked>
+                                <label for="Cultivar">Cultivar</label>
                             </td>
                             <td style="min-width:100px">
                                 <input type="checkbox" id="Imputed" name="Imputed" value="Imputed" checked>
@@ -58,7 +58,7 @@ include '../header.php';
                 </form>
             </td>
             <td width="50%" align="center" valign="top" style="border:1px solid #999999; padding:10px; background-color:#f8f8f8; text-align:left;">
-                <form action="viewAllByAccessionAndGene.php" method="get">
+                <form action="viewAllByAccessionAndGene.php" method="get" target="_blank">
                     <h2>Search By Accession and Gene Name</h2>
                     <br />
                     <label for="dataset2"><b>Dataset:</b></label>

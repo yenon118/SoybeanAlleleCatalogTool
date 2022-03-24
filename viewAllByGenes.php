@@ -1,12 +1,15 @@
+<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+
 <?php
 $TITLE = "Soybean Allele Catalog Tool";
-include '../header.php';
+
+// include '../header.php';
+include '../config.php';
 include './php/pdoResultFilter.php';
 include './php/dataProcessor.php';
 
 echo '<link rel="stylesheet" href="css/modal.css">';
 ?>
-
 
 <!-- Get and process the variables -->
 <?php
@@ -14,9 +17,9 @@ $gene = $_GET['gene1'];
 $dataset = $_GET['dataset1'];
 
 $soja = $_GET['Soja'];
-$cultivar = $_GET['Cultivar'];
+$elite = $_GET['Elite'];
 $landrace = $_GET['Landrace'];
-$na_cultivar = $_GET['NA_Cultivar'];
+$cultivar = $_GET['Cultivar'];
 $imputed = $_GET['Imputed'];
 $unimputed = $_GET['Unimputed'];
 
@@ -29,14 +32,14 @@ $checkboxes = array();
 if(isset($soja)) {
     array_push($checkboxes, $soja);
 }
-if(isset($cultivar)) {
-    array_push($checkboxes, $cultivar);
+if(isset($elite)) {
+    array_push($checkboxes, $elite);
 }
 if(isset($landrace)) {
     array_push($checkboxes, $landrace);
 }
-if(isset($na_cultivar)) {
-    array_push($checkboxes, $na_cultivar);
+if(isset($cultivar)) {
+    array_push($checkboxes, $cultivar);
 }
 if(isset($imputed)) {
     array_push($checkboxes, $imputed);
@@ -59,15 +62,15 @@ $query_str = "SELECT ";
 if (in_array("Soja", $checkboxes)) {
     $query_str = $query_str . "COUNT(IF(Improvement_Status = 'G. soja', 1, null)) AS Soja, ";
 }
-if (in_array("Cultivar", $checkboxes)) {
-    $query_str = $query_str . "COUNT(IF(Improvement_Status IN ('Cultivar', 'Elite'), 1, null)) AS Cultivar, ";
+if (in_array("Elite", $checkboxes)) {
+    $query_str = $query_str . "COUNT(IF(Improvement_Status IN ('Cultivar', 'Elite'), 1, null)) AS Elite, ";
 }
 if (in_array("Landrace", $checkboxes)) {
     $query_str = $query_str . "COUNT(IF(Improvement_Status = 'Landrace', 1, null)) AS Landrace, ";
 }
 $query_str = $query_str . "COUNT(IF(Improvement_Status IN ('G. soja', 'Cultivar', 'Elite', 'Landrace', 'Genetic'), 1, null)) AS Total, ";
-if (in_array("NA_Cultivar", $checkboxes)) {
-    $query_str = $query_str . "COUNT(IF(Classification = 'NA Cultivar', 1, null)) AS NA_Cultivar, ";
+if (in_array("Cultivar", $checkboxes)) {
+    $query_str = $query_str . "COUNT(IF(Classification = 'NA Cultivar', 1, null)) AS Cultivar, ";
 }
 if (in_array("Imputed", $checkboxes)) {
     $query_str = $query_str . "COUNT(IF(Imputation = '+', 1, null)) AS Imputed, ";
@@ -100,7 +103,7 @@ $result_arr = processAccessionCounts($result_arr);
     <!-- Modal content -->
     <div class="modal-content">
         <span class="modal-close">&times;</span>
-        <div id="modal-content-div" style='width:100%;height:100%; border:3px solid #000; overflow:scroll;max-height:1000px;'></div>
+        <div id="modal-content-div" style='width:100%; height:auto; border:3px solid #000; overflow:scroll;max-height:1000px;'></div>
         <div id="modal-content-comment"></div>
     </div>
 </div>
@@ -119,7 +122,7 @@ $splice_color_code = "#9EE85C";
 for ($i = 0; $i < count($result_arr); $i++) {
     $segment_arr = $result_arr[array_keys($result_arr)[$i]];
 
-    echo "<div style='width:100%;height:100%; border:3px solid #000; overflow:scroll;max-height:1000px;'>";
+    echo "<div style='width:100%; height:auto; border:3px solid #000; overflow:scroll;max-height:1000px;'>";
     echo "<table style='text-align:center;'>";
 
     // Table header
@@ -127,14 +130,14 @@ for ($i = 0; $i < count($result_arr); $i++) {
     echo "<th></th>";
     foreach ($segment_arr[0] as $key => $value) {
         if ($key != "Position" && $key != "Genotype" && $key != "Genotype_with_Description") {
-            echo "<th>" . $key . "</th>";
+            echo "<th style=\"border:1px solid black;min-width:80px;\">" . $key . "</th>";
         }
     }
     foreach ($segment_arr[0] as $key => $value) {
         if ($key == "Position") {
             $positionArray = preg_split("/[;, |\n]+/", $value);
             for ($j = 0; $j < count($positionArray); $j++) {
-                echo "<th>" . $positionArray[$j] . "</th>";
+                echo "<th style=\"border:1px solid black;min-width:120px;\">" . $positionArray[$j] . "</th>";
             }
         }
     }
@@ -151,11 +154,11 @@ for ($i = 0; $i < count($result_arr); $i++) {
         foreach ($segment_arr[$j] as $key => $value) {
             if (strval($key) != "Position" && strval($key) != "Genotype" && strval($key) != "Genotype_with_Description") {
                 if (!is_numeric($key) && intval($key) == 0 && is_numeric($value) && intval($value) > 0 && strval($key) != "Gene") {
-                    echo "<td style=\"min-width:80px\"><a href=\"javascript:void(0);\" onclick=\"getAccessionsByImpStatusGenePositionGenotypeDesc('" . strval($dataset) . "', '" . strval($key) . "', '" . $segment_arr[$j]["Gene"] . "', '" . $segment_arr[$j]["Position"] . "', '" . $segment_arr[$j]["Genotype_with_Description"] . "');\">" . $value . "</a></td>";
+                    echo "<td style=\"border:1px solid black;min-width:80px;\"><a href=\"javascript:void(0);\" onclick=\"getAccessionsByImpStatusGenePositionGenotypeDesc('" . strval($dataset) . "', '" . strval($key) . "', '" . $segment_arr[$j]["Gene"] . "', '" . $segment_arr[$j]["Position"] . "', '" . $segment_arr[$j]["Genotype_with_Description"] . "');\">" . $value . "</a></td>";
                 } else if (!is_numeric($key) && intval($key) == 0 && is_numeric($value) && intval($value) == 0 && strval($key) != "Gene") {
-                    echo "<td style=\"min-width:80px\">" . $value . "</td>";
+                    echo "<td style=\"border:1px solid black;min-width:80px;\">" . $value . "</td>";
                 } else if (!is_numeric($key) && intval($key) == 0 && !is_numeric($value) && intval($value) == 0 && strval($key) == "Gene") {
-                    echo "<td style=\"min-width:80px\">" . $value . "</td>";
+                    echo "<td style=\"border:1px solid black;min-width:80px;\">" . $value . "</td>";
                 }
             }
         }
@@ -166,27 +169,27 @@ for ($i = 0; $i < count($result_arr); $i++) {
                     if (preg_match("/missense.variant/i", $genotypeWithDescriptionArray[$k])) {
                         $temp_value_arr = preg_split("/[;, |\n]+/", $genotypeWithDescriptionArray[$k]);
                         $temp_value = (count($temp_value_arr) > 2 ? $temp_value_arr[0] . "|" . $temp_value_arr[2] : $genotypeWithDescriptionArray[$k]);
-                        echo "<td id=\"pos__" . $segment_arr[$j]["Gene"] . "__" . $key . "__" . $j . "\" style=\"min-width:80px;background-color:" . $missense_variant_color_code . "\">" . $temp_value . "</td>";
+                        echo "<td id=\"pos__" . $segment_arr[$j]["Gene"] . "__" . $key . "__" . $j . "\" style=\"border:1px solid black;min-width:120px;background-color:" . $missense_variant_color_code . "\">" . $temp_value . "</td>";
                     } else if (preg_match("/frameshift/i", $genotypeWithDescriptionArray[$k])) {
-                        echo "<td id=\"pos__" . $segment_arr[$j]["Gene"] . "__" . $key . "__" . $j . "\" style=\"min-width:80px;background-color:" . $frameshift_variant_color_code . "\">" . $genotypeWithDescriptionArray[$k] . "</td>";
+                        echo "<td id=\"pos__" . $segment_arr[$j]["Gene"] . "__" . $key . "__" . $j . "\" style=\"border:1px solid black;min-width:120px;background-color:" . $frameshift_variant_color_code . "\">" . $genotypeWithDescriptionArray[$k] . "</td>";
                     } else if (preg_match("/exon.loss/i", $genotypeWithDescriptionArray[$k])) {
-                        echo "<td id=\"pos__" . $segment_arr[$j]["Gene"] . "__" . $key . "__" . $j . "\" style=\"min-width:80px;background-color:" . $exon_loss_variant_color_code . "\">" . $genotypeWithDescriptionArray[$k] . "</td>";
+                        echo "<td id=\"pos__" . $segment_arr[$j]["Gene"] . "__" . $key . "__" . $j . "\" style=\"border:1px solid black;min-width:120px;background-color:" . $exon_loss_variant_color_code . "\">" . $genotypeWithDescriptionArray[$k] . "</td>";
                     } else if (preg_match("/lost/i", $genotypeWithDescriptionArray[$k])) {
                         $temp_value_arr = preg_split("/[;, |\n]+/", $genotypeWithDescriptionArray[$k]);
                         $temp_value = (count($temp_value_arr) > 2 ? $temp_value_arr[0] . "|" . $temp_value_arr[2] : $genotypeWithDescriptionArray[$k]);
-                        echo "<td id=\"pos__" . $segment_arr[$j]["Gene"] . "__" . $key . "__" . $j . "\" style=\"min-width:80px;background-color:" . $lost_color_code . "\">" . $genotypeWithDescriptionArray[$k] . "</td>";
+                        echo "<td id=\"pos__" . $segment_arr[$j]["Gene"] . "__" . $key . "__" . $j . "\" style=\"border:1px solid black;min-width:120px;background-color:" . $lost_color_code . "\">" . $genotypeWithDescriptionArray[$k] . "</td>";
                     } else if (preg_match("/gain/i", $genotypeWithDescriptionArray[$k])) {
                         $temp_value_arr = preg_split("/[;, |\n]+/", $genotypeWithDescriptionArray[$k]);
                         $temp_value = (count($temp_value_arr) > 2 ? $temp_value_arr[0] . "|" . $temp_value_arr[2] : $genotypeWithDescriptionArray[$k]);
-                        echo "<td id=\"pos__" . $segment_arr[$j]["Gene"] . "__" . $key . "__" . $j . "\" style=\"min-width:80px;background-color:" . $gain_color_code . "\">" . $genotypeWithDescriptionArray[$k] . "</td>";
+                        echo "<td id=\"pos__" . $segment_arr[$j]["Gene"] . "__" . $key . "__" . $j . "\" style=\"border:1px solid black;min-width:120px;background-color:" . $gain_color_code . "\">" . $genotypeWithDescriptionArray[$k] . "</td>";
                     } else if (preg_match("/disruptive/i", $genotypeWithDescriptionArray[$k])) {
-                        echo "<td id=\"pos__" . $segment_arr[$j]["Gene"] . "__" . $key . "__" . $j . "\" style=\"min-width:80px;background-color:" . $disruptive_color_code . "\">" . $genotypeWithDescriptionArray[$k] . "</td>";
+                        echo "<td id=\"pos__" . $segment_arr[$j]["Gene"] . "__" . $key . "__" . $j . "\" style=\"border:1px solid black;min-width:120px;background-color:" . $disruptive_color_code . "\">" . $genotypeWithDescriptionArray[$k] . "</td>";
                     } else if (preg_match("/splice/i", $genotypeWithDescriptionArray[$k])) {
-                        echo "<td id=\"pos__" . $segment_arr[$j]["Gene"] . "__" . $key . "__" . $j . "\" style=\"min-width:80px;background-color:" . $splice_color_code . "\">" . $genotypeWithDescriptionArray[$k] . "</td>";
+                        echo "<td id=\"pos__" . $segment_arr[$j]["Gene"] . "__" . $key . "__" . $j . "\" style=\"border:1px solid black;min-width:120px;background-color:" . $splice_color_code . "\">" . $genotypeWithDescriptionArray[$k] . "</td>";
                     } else if (preg_match("/ref/i", $genotypeWithDescriptionArray[$k])) {
-                        echo "<td id=\"pos__" . $segment_arr[$j]["Gene"] . "__" . $key . "__" . $j . "\" style=\"min-width:80px;background-color:" . $ref_color_code . "\">" . $genotypeWithDescriptionArray[$k] . "</td>";
+                        echo "<td id=\"pos__" . $segment_arr[$j]["Gene"] . "__" . $key . "__" . $j . "\" style=\"border:1px solid black;min-width:120px;background-color:" . $ref_color_code . "\">" . $genotypeWithDescriptionArray[$k] . "</td>";
                     } else {
-                        echo "<td id=\"pos__" . $segment_arr[$j]["Gene"] . "__" . $key . "__" . $j . "\" style=\"min-width:80px;background-color:#FFFFFF\">" . $genotypeWithDescriptionArray[$k] . "</td>";
+                        echo "<td id=\"pos__" . $segment_arr[$j]["Gene"] . "__" . $key . "__" . $j . "\" style=\"border:1px solid black;min-width:120px;background-color:#FFFFFF\">" . $genotypeWithDescriptionArray[$k] . "</td>";
                     }
                 }
             }

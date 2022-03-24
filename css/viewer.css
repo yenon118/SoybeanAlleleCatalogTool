@@ -1,0 +1,32 @@
+
+.body_wrap_standard {
+    position: relative;
+    margin-left:-250px;
+    width:1442px;
+    background-color: #EFF0EB;
+    border: 1px solid #25430C;
+    height: auto;
+    min-height: 200px;
+    padding: 15px;
+}
+
+.page_title {
+    position: relative;
+    width: 1060px;
+    float: left;
+    background-image: url(../../images/sprite.gif);
+    background-position: -2px -103px;
+    padding: 4px 0px 4px 38px;
+    background-repeat: no-repeat;
+    font-size: 20px;
+    font-weight: bold;
+    color: #333333;
+}
+
+.full_width {
+    position: relative;
+    width: 1442px;
+    float: left;
+    margin: 0px;
+    padding: 30px 0px 15px 0px;
+}

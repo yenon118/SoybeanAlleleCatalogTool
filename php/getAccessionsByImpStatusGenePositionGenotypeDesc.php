@@ -9,7 +9,7 @@ $gene = $_GET['Gene'];
 $position = $_GET['Position'];
 $genotypeWithDescription = $_GET['GenotypeWithDescription'];
 
-if(preg_match("/na.cultivar/i", strval($key))){
+if(preg_match("/cultivar/i", strval($key))){
     $query_str = "
         SELECT Classification, Improvement_Status, Maturity_Group, Country, State, Accession, Gene, Position, Genotype, Genotype_with_Description, Imputation 
         FROM soykb." . $dataset . "
@@ -28,7 +28,7 @@ if(preg_match("/na.cultivar/i", strval($key))){
         AND Genotype_with_Description = ?
         AND Improvement_Status LIKE '%soja%' ORDER BY Accession;
     ";
-} else if(preg_match("/cultivar/i", strval($key))){
+} else if(preg_match("/elite/i", strval($key))){
     $query_str = "
         SELECT Classification, Improvement_Status, Maturity_Group, Country, State, Accession, Gene, Position, Genotype, Genotype_with_Description, Imputation 
         FROM soykb." . $dataset . "

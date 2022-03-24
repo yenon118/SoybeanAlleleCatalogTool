@@ -15,16 +15,16 @@ function constructInfoTable(arr) {
     let th_keys = Object.keys(arr[0]);
     for (let i = 0; i < th_keys.length; i++) {
         if (th_keys[i] !== "Position" && th_keys[i] !== "Genotype" && th_keys[i] !== "Genotype_with_Description" && th_keys[i] !== "Imputation") {
-            document.getElementById('modal-content-table-head').innerHTML += "<th style=\"min-width:80px;text-align:center\">" + th_keys[i] + "</th>";
+            document.getElementById('modal-content-table-head').innerHTML += "<th style=\"border:1px solid black;min-width:120px;text-align:center\">" + th_keys[i] + "</th>";
         }
     }
     position_arr = String(arr[0]['Position']).split(" ");
     for (let i = 0; i < position_arr.length; i++) {
-        document.getElementById('modal-content-table-head').innerHTML += "<th style=\"min-width:80px;text-align:center\">" + position_arr[i] + "</th>";
+        document.getElementById('modal-content-table-head').innerHTML += "<th style=\"border:1px solid black;min-width:120px;text-align:center\">" + position_arr[i] + "</th>";
     }
     for (let i = 0; i < th_keys.length; i++) {
         if (th_keys[i] === "Imputation") {
-            document.getElementById('modal-content-table-head').innerHTML += "<th style=\"min-width:80px;text-align:center\">" + th_keys[i] + "</th>";
+            document.getElementById('modal-content-table-head').innerHTML += "<th style=\"border:1px solid black;min-width:120px;text-align:center\">" + th_keys[i] + "</th>";
         }
     }
 
@@ -39,7 +39,7 @@ function constructInfoTable(arr) {
 
         for (let j = 0; j < tr_keys.length; j++) {
             if (tr_keys[j] !== "Position" && tr_keys[j] !== "Genotype" && tr_keys[j] !== "Genotype_with_Description" && tr_keys[j] !== "Imputation") {
-                document.getElementById(modal_content_table_data_id).innerHTML += "<td style=\"min-width:80px;text-align:left\">" + ((arr[i][tr_keys[j]] === null) ? "" : arr[i][tr_keys[j]]) + "</td>";
+                document.getElementById(modal_content_table_data_id).innerHTML += "<td style=\"border:1px solid black;min-width:120px;text-align:left\">" + ((arr[i][tr_keys[j]] === null) ? "" : arr[i][tr_keys[j]]) + "</td>";
             }
         }
         for (let j = 0; j < tr_keys.length; j++) {
@@ -49,34 +49,34 @@ function constructInfoTable(arr) {
                     if (String(genotypeWithDescriptionArray[k]).search(/missense.variant/i) !== -1 && String(genotypeWithDescriptionArray[k]).search(/missense.variant/i) !== undefined) {
                         let temp_value_arr = String(genotypeWithDescriptionArray[k]).split('|');
                         let temp_value = (temp_value_arr.length > 2) ? temp_value_arr[0] + "|" + temp_value_arr[2] : genotypeWithDescriptionArray[k];
-                        document.getElementById(modal_content_table_data_id).innerHTML += "<td style=\"min-width:80px;text-align:center;background-color:" + missense_variant_color_code + "\">" + temp_value + "</td>";
+                        document.getElementById(modal_content_table_data_id).innerHTML += "<td style=\"border:1px solid black;min-width:120px;text-align:center;background-color:" + missense_variant_color_code + "\">" + temp_value + "</td>";
                     } else if (String(genotypeWithDescriptionArray[k]).search(/frameshift/i) !== -1 && String(genotypeWithDescriptionArray[k]).search(/frameshift/i) !== undefined) {
-                        document.getElementById(modal_content_table_data_id).innerHTML += "<td style=\"min-width:80px;text-align:center;background-color:" + frameshift_variant_color_code + "\">" + genotypeWithDescriptionArray[k] + "</td>";
+                        document.getElementById(modal_content_table_data_id).innerHTML += "<td style=\"border:1px solid black;min-width:120px;text-align:center;background-color:" + frameshift_variant_color_code + "\">" + genotypeWithDescriptionArray[k] + "</td>";
                     } else if (String(genotypeWithDescriptionArray[k]).search(/exon.loss/i) !== -1 && String(genotypeWithDescriptionArray[k]).search(/exon.loss/i) !== undefined) {
-                        document.getElementById(modal_content_table_data_id).innerHTML += "<td style=\"min-width:80px;text-align:center;background-color:" + exon_loss_variant_color_code + "\">" + genotypeWithDescriptionArray[k] + "</td>";
+                        document.getElementById(modal_content_table_data_id).innerHTML += "<td style=\"border:1px solid black;min-width:120px;text-align:center;background-color:" + exon_loss_variant_color_code + "\">" + genotypeWithDescriptionArray[k] + "</td>";
                     } else if (String(genotypeWithDescriptionArray[k]).search(/lost/i) !== -1 && String(genotypeWithDescriptionArray[k]).search(/lost/i) !== undefined) {
                         let temp_value_arr = String(genotypeWithDescriptionArray[k]).split('|');
                         let temp_value = (temp_value_arr.length > 2) ? temp_value_arr[0] + "|" + temp_value_arr[2] : genotypeWithDescriptionArray[k];
-                        document.getElementById(modal_content_table_data_id).innerHTML += "<td style=\"min-width:80px;text-align:center;background-color:" + lost_color_code + "\">" + temp_value + "</td>";
+                        document.getElementById(modal_content_table_data_id).innerHTML += "<td style=\"border:1px solid black;min-width:120px;text-align:center;background-color:" + lost_color_code + "\">" + temp_value + "</td>";
                     } else if (String(genotypeWithDescriptionArray[k]).search(/gain/i) !== -1 && String(genotypeWithDescriptionArray[k]).search(/gain/i) !== undefined) {
                         let temp_value_arr = String(genotypeWithDescriptionArray[k]).split('|');
                         let temp_value = (temp_value_arr.length > 2) ? temp_value_arr[0] + "|" + temp_value_arr[2] : genotypeWithDescriptionArray[k];
-                        document.getElementById(modal_content_table_data_id).innerHTML += "<td style=\"min-width:80px;text-align:center;background-color:" + gain_color_code + "\">" + temp_value + "</td>";
+                        document.getElementById(modal_content_table_data_id).innerHTML += "<td style=\"border:1px solid black;min-width:120px;text-align:center;background-color:" + gain_color_code + "\">" + temp_value + "</td>";
                     } else if (String(genotypeWithDescriptionArray[k]).search(/disruptive/i) !== -1 && String(genotypeWithDescriptionArray[k]).search(/disruptive/i) !== undefined) {
-                        document.getElementById(modal_content_table_data_id).innerHTML += "<td style=\"min-width:80px;text-align:center;background-color:" + disruptive_color_code + "\">" + genotypeWithDescriptionArray[k] + "</td>";
+                        document.getElementById(modal_content_table_data_id).innerHTML += "<td style=\"border:1px solid black;min-width:120px;text-align:center;background-color:" + disruptive_color_code + "\">" + genotypeWithDescriptionArray[k] + "</td>";
                     } else if (String(genotypeWithDescriptionArray[k]).search(/splice/i) !== -1 && String(genotypeWithDescriptionArray[k]).search(/splice/i) !== undefined) {
-                        document.getElementById(modal_content_table_data_id).innerHTML += "<td style=\"min-width:80px;text-align:center;background-color:" + splice_color_code + "\">" + genotypeWithDescriptionArray[k] + "</td>";
+                        document.getElementById(modal_content_table_data_id).innerHTML += "<td style=\"border:1px solid black;min-width:120px;text-align:center;background-color:" + splice_color_code + "\">" + genotypeWithDescriptionArray[k] + "</td>";
                     } else if (String(genotypeWithDescriptionArray[k]).search(/ref/i) !== -1 && String(genotypeWithDescriptionArray[k]).search(/ref/i) !== undefined) {
-                        document.getElementById(modal_content_table_data_id).innerHTML += "<td style=\"min-width:80px;text-align:center;background-color:" + ref_color_code + "\">" + genotypeWithDescriptionArray[k] + "</td>";
+                        document.getElementById(modal_content_table_data_id).innerHTML += "<td style=\"border:1px solid black;min-width:120px;text-align:center;background-color:" + ref_color_code + "\">" + genotypeWithDescriptionArray[k] + "</td>";
                     } else {
-                        document.getElementById(modal_content_table_data_id).innerHTML += "<td style=\"min-width:80px;text-align:center;background-color:#FFFFFF\">" + genotypeWithDescriptionArray[k] + "</td>";
+                        document.getElementById(modal_content_table_data_id).innerHTML += "<td style=\"border:1px solid black;min-width:120px;text-align:center;background-color:#FFFFFF\">" + genotypeWithDescriptionArray[k] + "</td>";
                     }
                 }
             }
         }
         for (let j = 0; j < tr_keys.length; j++) {
             if (tr_keys[j] === "Imputation") {
-                document.getElementById(modal_content_table_data_id).innerHTML += "<td style=\"min-width:80px;text-align:center\">" + ((arr[i][tr_keys[j]] === null) ? "" : arr[i][tr_keys[j]]) + "</td>";
+                document.getElementById(modal_content_table_data_id).innerHTML += "<td style=\"border:1px solid black;min-width:120px;text-align:center\">" + ((arr[i][tr_keys[j]] === null) ? "" : arr[i][tr_keys[j]]) + "</td>";
             }
         }
     }

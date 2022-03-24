@@ -36,15 +36,15 @@ if (isset($genes) && !empty($genes) && !is_null($genes) && isset($dataset) && !e
     if(in_array("Soja", $checkboxes)) {
         $query_str = $query_str . "COUNT(IF(Improvement_Status = 'G. soja', 1, null)) AS Soja, ";
     }
-    if(in_array("Cultivar", $checkboxes)) {
-        $query_str = $query_str . "COUNT(IF(Improvement_Status IN ('Cultivar', 'Elite'), 1, null)) AS Cultivar, ";
+    if(in_array("Elite", $checkboxes)) {
+        $query_str = $query_str . "COUNT(IF(Improvement_Status IN ('Cultivar', 'Elite'), 1, null)) AS Elite, ";
     }
     if(in_array("Landrace", $checkboxes)) {
         $query_str = $query_str . "COUNT(IF(Improvement_Status = 'Landrace', 1, null)) AS Landrace, ";
     }
     $query_str = $query_str . "COUNT(IF(Improvement_Status IN ('G. soja', 'Cultivar', 'Elite', 'Landrace', 'Genetic'), 1, null)) AS Total, ";
-    if(in_array("NA_Cultivar", $checkboxes)) {
-        $query_str = $query_str . "COUNT(IF(Classification = 'NA Cultivar', 1, null)) AS NA_Cultivar, ";
+    if(in_array("Cultivar", $checkboxes)) {
+        $query_str = $query_str . "COUNT(IF(Classification = 'NA Cultivar', 1, null)) AS Cultivar, ";
     }
     if(in_array("Imputed", $checkboxes)) {
         $query_str = $query_str . "COUNT(IF(Imputation = '+', 1, null)) AS Imputed, ";

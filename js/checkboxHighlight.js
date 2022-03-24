@@ -21,7 +21,7 @@ function checkbox_highlights(event) {
         for (let i = 0; i < matches.length; i++) {
             matches_id_str_arr = matches[i].id.split('__');
             if (parseInt(matches_id_str_arr[matches_id_str_arr.length - 1]) == parseInt(n)) {
-                matches[i].style.fontSize = "15px";
+                matches[i].style.fontSize = "20px";
                 // console.log(matches[i].style.fontSize);
             }
         }
