@@ -62,11 +62,11 @@ $query_str = "SELECT ";
 if (in_array("Soja", $checkboxes)) {
     $query_str = $query_str . "COUNT(IF(Improvement_Status = 'G. soja', 1, null)) AS Soja, ";
 }
-if (in_array("Elite", $checkboxes)) {
-    $query_str = $query_str . "COUNT(IF(Improvement_Status IN ('Cultivar', 'Elite'), 1, null)) AS Elite, ";
-}
 if (in_array("Landrace", $checkboxes)) {
     $query_str = $query_str . "COUNT(IF(Improvement_Status = 'Landrace', 1, null)) AS Landrace, ";
+}
+if (in_array("Elite", $checkboxes)) {
+    $query_str = $query_str . "COUNT(IF(Improvement_Status IN ('Cultivar', 'Elite'), 1, null)) AS Elite, ";
 }
 $query_str = $query_str . "COUNT(IF(Improvement_Status IN ('G. soja', 'Cultivar', 'Elite', 'Landrace', 'Genetic'), 1, null)) AS Total, ";
 if (in_array("Cultivar", $checkboxes)) {
@@ -117,6 +117,7 @@ $exon_loss_variant_color_code = "#F26A55";
 $lost_color_code = "#F26A55";
 $gain_color_code = "#F26A55";
 $disruptive_color_code = "#F26A55";
+$conservative_color_code = "#F26A55";
 $splice_color_code = "#9EE85C";
 
 for ($i = 0; $i < count($result_arr); $i++) {
@@ -184,6 +185,8 @@ for ($i = 0; $i < count($result_arr); $i++) {
                         echo "<td id=\"pos__" . $segment_arr[$j]["Gene"] . "__" . $key . "__" . $j . "\" style=\"border:1px solid black;min-width:120px;background-color:" . $gain_color_code . "\">" . $genotypeWithDescriptionArray[$k] . "</td>";
                     } else if (preg_match("/disruptive/i", $genotypeWithDescriptionArray[$k])) {
                         echo "<td id=\"pos__" . $segment_arr[$j]["Gene"] . "__" . $key . "__" . $j . "\" style=\"border:1px solid black;min-width:120px;background-color:" . $disruptive_color_code . "\">" . $genotypeWithDescriptionArray[$k] . "</td>";
+                    } else if (preg_match("/conservative/i", $genotypeWithDescriptionArray[$k])) {
+                        echo "<td id=\"pos__" . $segment_arr[$j]["Gene"] . "__" . $key . "__" . $j . "\" style=\"border:1px solid black;min-width:120px;background-color:" . $conservative_color_code . "\">" . $genotypeWithDescriptionArray[$k] . "</td>";
                     } else if (preg_match("/splice/i", $genotypeWithDescriptionArray[$k])) {
                         echo "<td id=\"pos__" . $segment_arr[$j]["Gene"] . "__" . $key . "__" . $j . "\" style=\"border:1px solid black;min-width:120px;background-color:" . $splice_color_code . "\">" . $genotypeWithDescriptionArray[$k] . "</td>";
                     } else if (preg_match("/ref/i", $genotypeWithDescriptionArray[$k])) {

@@ -36,11 +36,11 @@ if (isset($genes) && !empty($genes) && !is_null($genes) && isset($dataset) && !e
     if(in_array("Soja", $checkboxes)) {
         $query_str = $query_str . "COUNT(IF(Improvement_Status = 'G. soja', 1, null)) AS Soja, ";
     }
-    if(in_array("Elite", $checkboxes)) {
-        $query_str = $query_str . "COUNT(IF(Improvement_Status IN ('Cultivar', 'Elite'), 1, null)) AS Elite, ";
-    }
     if(in_array("Landrace", $checkboxes)) {
         $query_str = $query_str . "COUNT(IF(Improvement_Status = 'Landrace', 1, null)) AS Landrace, ";
+    }
+    if(in_array("Elite", $checkboxes)) {
+        $query_str = $query_str . "COUNT(IF(Improvement_Status IN ('Cultivar', 'Elite'), 1, null)) AS Elite, ";
     }
     $query_str = $query_str . "COUNT(IF(Improvement_Status IN ('G. soja', 'Cultivar', 'Elite', 'Landrace', 'Genetic'), 1, null)) AS Total, ";
     if(in_array("Cultivar", $checkboxes)) {
