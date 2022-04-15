@@ -43,12 +43,12 @@ include '../header.php';
                                 <label for="Cultivar">Cultivar</label>
                             </td>
                             <td style="min-width:100px">
-                                <input type="checkbox" id="Imputed" name="Imputed" value="Imputed">
-                                <label for="Imputed">Imputed</label>
+                                <input type="checkbox" id="Imputed" name="Imputed" value="Imputed" hidden>
+                                <label for="Imputed" hidden>Imputed</label>
                             </td>
                             <td style="min-width:100px">
-                                <input type="checkbox" id="Unimputed" name="Unimputed" value="Unimputed">
-                                <label for="Unimputed">Unimputed</label>
+                                <input type="checkbox" id="Unimputed" name="Unimputed" value="Unimputed" hidden>
+                                <label for="Unimputed" hidden>Unimputed</label>
                             </td>
                         </tr>
                     </table>

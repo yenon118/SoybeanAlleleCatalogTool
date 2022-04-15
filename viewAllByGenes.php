@@ -117,7 +117,7 @@ $exon_loss_variant_color_code = "#F26A55";
 $lost_color_code = "#F26A55";
 $gain_color_code = "#F26A55";
 $disruptive_color_code = "#F26A55";
-$conservative_color_code = "#F26A55";
+$conservative_color_code = "#FF7F50";
 $splice_color_code = "#9EE85C";
 
 for ($i = 0; $i < count($result_arr); $i++) {
