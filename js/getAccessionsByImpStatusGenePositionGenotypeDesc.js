@@ -52,13 +52,13 @@ function constructInfoTable(arr, imp_arr) {
                     if (imp_arr){
                         if (imp_arr.length > 0) {
                             for (let m = 0; m < imp_arr.length; m++) {
-                                if(imp_arr[m]["Accession"] === arr[i]["Accession"] && imp_arr[m]["Gene"] === arr[i]["Gene"] && imp_arr[m]["Position"] === position_arr[k]) {
-                                    genotypeWithDescriptionArray[k] = genotypeWithDescriptionArray[k] + "|+";
+                                if(imp_arr[m]["Accession"] === arr[i]["Accession"] && imp_arr[m]["Gene"] === arr[i]["Gene"] && parseInt(imp_arr[m]["Position"]) === parseInt(position_arr[k])) {
+                                    genotypeWithDescriptionArray[k] = String(genotypeWithDescriptionArray[k]) + "|+";
                                 }
                             }
                         }
                     }
-                    
+
                     if (String(genotypeWithDescriptionArray[k]).search(/missense.variant/i) !== -1 && String(genotypeWithDescriptionArray[k]).search(/missense.variant/i) !== undefined) {
                         let temp_value_arr = String(genotypeWithDescriptionArray[k]).split('|');
                         let temp_value = "";
