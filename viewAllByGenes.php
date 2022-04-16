@@ -120,6 +120,10 @@ $disruptive_color_code = "#F26A55";
 $conservative_color_code = "#FF7F50";
 $splice_color_code = "#9EE85C";
 
+if (!isset($result_arr) || is_null($result_arr) || empty($result_arr)) {
+    echo "<p>No record found!!!</p>";
+}
+
 for ($i = 0; $i < count($result_arr); $i++) {
     $segment_arr = $result_arr[array_keys($result_arr)[$i]];
 
