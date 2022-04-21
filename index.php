@@ -8,7 +8,7 @@ include '../header.php';
         <tr>
             <td width="50%" align="center" valign="top" style="border:1px solid #999999; padding:10px; background-color:#f8f8f8; text-align:left;">
                 <form action="viewAllByGenes.php" method="get" target="_blank">
-                    <h2>Search by Gene Names</h2>
+                    <h2>Search by Gene IDs</h2>
                     <br />
                     <label for="dataset1"><b>Dataset:</b></label>
                     <select name="dataset1" id="dataset1">
@@ -17,7 +17,7 @@ include '../header.php';
                     </select>
                     <br />
                     <br />
-                    <b>Gene names</b><span>&nbsp;(eg Glyma.01G049100 Glyma.01G049200 Glyma.01G049300)</span>
+                    <b>Gene IDs</b><span>&nbsp;(eg Glyma.01G049100 Glyma.01G049200 Glyma.01G049300)</span>
                     <br />
                     <textarea id="gene1" name="gene1" rows="12" cols="50" placeholder="&#10;Please separate each gene into a new line. &#10;&#10;Example:&#10;Glyma.01g049100&#10;Glyma.01g049200&#10;Glyma.01g049300"></textarea>
                     <br />
@@ -59,7 +59,7 @@ include '../header.php';
             </td>
             <td width="50%" align="center" valign="top" style="border:1px solid #999999; padding:10px; background-color:#f8f8f8; text-align:left;">
                 <form action="viewAllByAccessionAndGene.php" method="get" target="_blank">
-                    <h2>Search by Accessions and Gene Name</h2>
+                    <h2>Search by Accessions and Gene ID</h2>
                     <br />
                     <label for="dataset2"><b>Dataset:</b></label>
                     <select name="dataset2" id="dataset2">
@@ -72,7 +72,7 @@ include '../header.php';
                     <br />
                     <textarea id="accession" name="accession" rows="12" cols="50" placeholder="&#10;Please separate each accession into a new line. &#10;&#10;Example:&#10;HN052_PI424079&#10;PI_479752"></textarea>
                     <br /><br />
-                    <b>Gene name</b><span>&nbsp;(One gene name only; eg Glyma.01G049100)</span>
+                    <b>Gene ID</b><span>&nbsp;(One gene name only; eg Glyma.01G049100)</span>
                     <br />
                     <input type="text" id="gene2" name="gene2" size="53"></input>
                     <br /><br />
