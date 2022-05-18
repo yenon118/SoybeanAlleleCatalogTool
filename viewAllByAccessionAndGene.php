@@ -76,7 +76,7 @@ if (count($result) > 0) {
 
 
 // Add imputation information
-$dataset = $dataset . "_Imputation";
+$imputation_dataset = $dataset . "_Imputation";
 
 if(isset($result_arr) && !empty($result_arr)) {
     if (count($result_arr) > 0) {
@@ -91,7 +91,7 @@ if(isset($result_arr) && !empty($result_arr)) {
     }
 }
 
-$query_str = "SELECT * FROM soykb." . $dataset;
+$query_str = "SELECT * FROM soykb." . $imputation_dataset;
 $query_str = $query_str . " WHERE (Gene = '" . $gene . "')";
 $query_str = $query_str . " AND (Accession IN ('";
 for ($i = 0; $i < count($accession_arr); $i++) {
