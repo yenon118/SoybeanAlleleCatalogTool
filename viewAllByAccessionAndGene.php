@@ -264,6 +264,8 @@ if (count($result_arr) > 0) {
     echo "<button type=\"submit\" onclick=\"window.open('https://data.cyverse.org/dav-anon/iplant/home/soykb/Soy1066/Accession_Info.csv')\" style=\"margin-right:20px;\">Download Accession Information</button>";
     echo "</div>";
     echo "<br/><br/>";
+} else {
+    echo "<p>No data found!!!</p>";
 }
 
 ?>
