@@ -19,7 +19,7 @@ include '../header.php';
                     <br />
                     <b>Gene IDs</b><span>&nbsp;(eg Glyma.01G049100 Glyma.01G049200 Glyma.01G049300)</span>
                     <br />
-                    <textarea id="gene1" name="gene1" rows="12" cols="50" placeholder="&#10;Please separate each gene into a new line. &#10;&#10;Example:&#10;Glyma.01g049100&#10;Glyma.01g049200&#10;Glyma.01g049300"></textarea>
+                    <textarea id="gene1" name="gene1" rows="12" cols="50" placeholder="&#10;Please separate each gene into a new line. &#10;&#10;Example:&#10;Glyma.01G049100&#10;Glyma.01G049200&#10;Glyma.01G049300"></textarea>
                     <br />
                     <br />
                     <table>
