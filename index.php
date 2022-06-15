@@ -68,7 +68,7 @@ include '../header.php';
                     </select>
                     <br />
                     <br />
-                    <b>Accessions</b><span>&nbsp;(eg HN052_PI424079 PI_479752)</span>
+                    <b>Accessions</b><span>&nbsp;(eg HN058_PI458515 PI_479752)</span>
                     <br />
                     <textarea id="accession" name="accession" rows="12" cols="50" placeholder="&#10;Please separate each accession into a new line. &#10;&#10;Example:&#10;HN052_PI424079&#10;PI_479752"></textarea>
                     <br /><br />
