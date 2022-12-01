@@ -3,51 +3,15 @@
 <?php
 $TITLE = "Soybean Allele Catalog Tool";
 
-// include '../header.php';
 include '../config.php';
 include './php/pdoResultFilter.php';
-include './php/dataProcessor.php';
-
-echo '<link rel="stylesheet" href="css/modal.css">';
+include './php/getTableNames.php';
+include './php/getSummarizedDataQueryString.php';
+include './php/getDataQueryString.php';
 ?>
 
-<!-- Get and process the variables -->
-<?php
-$gene = $_GET['gene1'];
-$dataset = $_GET['dataset1'];
+<link rel="stylesheet" href="css/modal.css" />
 
-$soja = $_GET['Soja'];
-$elite = $_GET['Elite'];
-$landrace = $_GET['Landrace'];
-$cultivar = $_GET['Cultivar'];
-$imputed = $_GET['Imputed'];
-$unimputed = $_GET['Unimputed'];
-
-
-$gene_arr = preg_split("/[;, \n]+/", $gene);
-for ($i = 0; $i < count($gene_arr); $i++) {
-    $gene_arr[$i] = trim($gene_arr[$i]);
-}
-$checkboxes = array();
-if(isset($soja)) {
-    array_push($checkboxes, $soja);
-}
-if(isset($elite)) {
-    array_push($checkboxes, $elite);
-}
-if(isset($landrace)) {
-    array_push($checkboxes, $landrace);
-}
-if(isset($cultivar)) {
-    array_push($checkboxes, $cultivar);
-}
-if(isset($imputed)) {
-    array_push($checkboxes, $imputed);
-}
-if(isset($unimputed)) {
-    array_push($checkboxes, $unimputed);
-}
-?>
 
 <!-- Back button -->
 <a href="/SoybeanAlleleCatalogTool/"><button> &lt; Back </button></a>
@@ -55,48 +19,6 @@ if(isset($unimputed)) {
 <br />
 <br />
 
-<!-- Query data from database -->
-<?php
-$query_str = "SELECT ";
-
-if (in_array("Soja", $checkboxes)) {
-    $query_str = $query_str . "COUNT(IF(Improvement_Status = 'G. soja', 1, null)) AS Soja, ";
-}
-if (in_array("Landrace", $checkboxes)) {
-    $query_str = $query_str . "COUNT(IF(Improvement_Status = 'Landrace', 1, null)) AS Landrace, ";
-}
-if (in_array("Elite", $checkboxes)) {
-    $query_str = $query_str . "COUNT(IF(Improvement_Status IN ('Cultivar', 'Elite'), 1, null)) AS Elite, ";
-}
-$query_str = $query_str . "COUNT(IF(Improvement_Status IN ('G. soja', 'Cultivar', 'Elite', 'Landrace', 'Genetic'), 1, null)) AS Total, ";
-if (in_array("Cultivar", $checkboxes)) {
-    $query_str = $query_str . "COUNT(IF(Classification = 'NA Cultivar', 1, null)) AS Cultivar, ";
-}
-if (in_array("Imputed", $checkboxes)) {
-    $query_str = $query_str . "COUNT(IF(Imputation = '+', 1, null)) AS Imputed, ";
-}
-if (in_array("Unimputed", $checkboxes)) {
-    $query_str = $query_str . "COUNT(IF(Imputation = '-', 1, null)) AS Unimputed, ";
-}
-
-$query_str = $query_str . "
-Gene, Position, Genotype, Genotype_with_Description 
-FROM " . $dataset . " 
-WHERE (Gene IN (" . str_repeat('?, ',  count($gene_arr) - 1) . '?' . ")) 
-GROUP BY Gene, Position, Genotype, Genotype_with_Description 
-ORDER BY Gene, Position, Total DESC;
-";
-
-$stmt = $PDO->prepare($query_str);
-for ($i = 0; $i < count($gene_arr); $i++) {
-    $stmt->bindValue(($i + 1), trim($gene_arr[$i]), PDO::PARAM_STR);
-}
-$stmt->execute();
-$result = $stmt->fetchAll();
-
-$result_arr = pdoResultFilter($result);
-$result_arr = processAccessionCounts($result_arr);
-?>
 
 <!-- Modal -->
 <div id="info-modal" class="info-modal">
@@ -108,8 +30,38 @@ $result_arr = processAccessionCounts($result_arr);
     </div>
 </div>
 
-<!-- Render the table -->
+
+<!-- Get and process the variables -->
 <?php
+$gene = $_GET['gene_1'];
+$dataset = $_GET['dataset_1'];
+$improvement_status_array = $_GET['improvement_status_1'];
+
+if (is_string($gene)) {
+    $gene_array = preg_split("/[;, \n]+/", $gene);
+    for ($i = 0; $i < count($gene_array); $i++) {
+        $gene_array[$i] = trim($gene_array[$i]);
+    }
+} elseif (is_array($gene)) {
+    $gene_array = $gene;
+    for ($i = 0; $i < count($gene_array); $i++) {
+        $gene_array[$i] = trim($gene_array[$i]);
+    }
+}
+
+$db = "soykb";
+
+// Table names and datasets
+$table_names = getTableNames($dataset);
+$key_column = $table_names["key_column"];
+$gff_table = $table_names["gff_table"];
+$accession_mapping_table = $table_names["accession_mapping_table"];
+?>
+
+
+<!-- Query data from database and render data-->
+<?php
+// Color for functional effects
 $ref_color_code = "#D1D1D1";
 $missense_variant_color_code = "#7FC8F5";
 $frameshift_variant_color_code = "#F26A55";
@@ -120,119 +72,165 @@ $disruptive_color_code = "#F26A55";
 $conservative_color_code = "#FF7F50";
 $splice_color_code = "#9EE85C";
 
-if (!isset($result_arr) || is_null($result_arr) || empty($result_arr)) {
-    echo "<p>No record found!!!</p>";
-}
+for ($i = 0; $i < count($gene_array); $i++) {
 
-for ($i = 0; $i < count($result_arr); $i++) {
-    $segment_arr = $result_arr[array_keys($result_arr)[$i]];
+    // Generate SQL string
+    $query_str = "SELECT Chromosome, Start, End, Name AS Gene ";
+    $query_str = $query_str . "FROM " . $db . "." . $gff_table . " ";
+    $query_str = $query_str . "WHERE (Name = '" . $gene_array[$i] . "') OR (UPPER(Name) = UPPER('" . $gene_array[$i] . "'));";
 
-    echo "<div style='width:100%; height:auto; border:3px solid #000; overflow:scroll;max-height:1000px;'>";
-    echo "<table style='text-align:center;'>";
+    $stmt = $PDO->prepare($query_str);
+    $stmt->execute();
+    $result = $stmt->fetchAll();
 
-    // Table header
-    echo "<tr>";
-    echo "<th></th>";
-    foreach ($segment_arr[0] as $key => $value) {
-        if ($key != "Position" && $key != "Genotype" && $key != "Genotype_with_Description") {
-            echo "<th style=\"border:1px solid black;min-width:80px;\">" . $key . "</th>";
-        }
-    }
-    foreach ($segment_arr[0] as $key => $value) {
-        if ($key == "Position") {
-            $positionArray = preg_split("/[;, |\n]+/", $value);
-            for ($j = 0; $j < count($positionArray); $j++) {
-                echo "<th style=\"border:1px solid black;min-width:120px;\">" . $positionArray[$j] . "</th>";
-            }
-        }
-    }
-    echo "<th></th>";
-    echo "</tr>";
+    $gene_result_arr = pdoResultFilter($result);
 
-    // Table body
-    for ($j = 0; $j < count($segment_arr); $j++) {
-        $tr_bgcolor = ($j % 2 ? "#FFFFFF" : "#DDFFDD");
+    // Generate query string
+    $query_str = getSummarizedDataQueryString(
+        $dataset,
+        $db,
+        $gff_table,
+        $accession_mapping_table,
+        $gene_result_arr[0]["Gene"],
+        $gene_result_arr[0]["Chromosome"],
+        $improvement_status_array,
+        ""
+    );
 
-        echo "<tr bgcolor=\"" . $tr_bgcolor . "\">";
-        echo "<td><input type=\"checkbox\" id=\"no__" . $segment_arr[$j]["Gene"] . "__" . $j . "__front\" onclick=\"checkbox_highlights(this)\"></td>";
+    $stmt = $PDO->prepare($query_str);
+    $stmt->execute();
+    $result = $stmt->fetchAll();
 
-        foreach ($segment_arr[$j] as $key => $value) {
-            if (strval($key) != "Position" && strval($key) != "Genotype" && strval($key) != "Genotype_with_Description") {
-                if (!is_numeric($key) && intval($key) == 0 && is_numeric($value) && intval($value) > 0 && strval($key) != "Gene") {
-                    echo "<td style=\"border:1px solid black;min-width:80px;\"><a href=\"javascript:void(0);\" onclick=\"getAccessionsByImpStatusGenePositionGenotypeDesc('" . strval($dataset) . "', '" . strval($key) . "', '" . $segment_arr[$j]["Gene"] . "', '" . $segment_arr[$j]["Position"] . "', '" . $segment_arr[$j]["Genotype_with_Description"] . "');\">" . $value . "</a></td>";
-                } else if (!is_numeric($key) && intval($key) == 0 && is_numeric($value) && intval($value) == 0 && strval($key) != "Gene") {
-                    echo "<td style=\"border:1px solid black;min-width:80px;\">" . $value . "</td>";
-                } else if (!is_numeric($key) && intval($key) == 0 && !is_numeric($value) && intval($value) == 0 && strval($key) == "Gene") {
-                    echo "<td style=\"border:1px solid black;min-width:80px;\">" . $value . "</td>";
+    $result_arr = pdoResultFilter($result);
+
+    // Render result to a table
+    if(isset($result_arr) && is_array($result_arr) && !empty($result_arr)) {
+
+        // Make table
+        echo "<div style='width:100%; height:auto; border:3px solid #000; overflow:scroll; max-height:1000px;'>";
+        echo "<table style='text-align:center;'>";
+
+        // Table header
+        echo "<tr>";
+        echo "<th></th>";
+        foreach ($result_arr[0] as $key => $value) {
+            if ($key != "Gene" && $key != "Chromosome" && $key != "Position" && $key != "Genotype" && $key != "Genotype_Description") {
+                // Improvement status count section
+                echo "<th style=\"border:1px solid black; min-width:80px;\">" . $key . "</th>";
+            } elseif ($key == "Gene") {
+                echo "<th style=\"border:1px solid black; min-width:80px;\">" . $key . "</th>";
+            } elseif ($key == "Chromosome") {
+                echo "<th style=\"border:1px solid black; min-width:80px;\">" . $key . "</th>";
+            } elseif ($key == "Position") {
+                // Position and genotype_description section
+                $position_array = preg_split("/[;, \n]+/", $value);
+                for ($j = 0; $j < count($position_array); $j++) {
+                    echo "<th style=\"border:1px solid black; min-width:80px;\">" . $position_array[$j] . "</th>";
                 }
             }
         }
-        foreach ($segment_arr[$j] as $key => $value) {
-            if ($key == "Genotype_with_Description") {
-                $genotypeWithDescriptionArray = preg_split("/[ ]+/", $value);
-                for ($k = 0; $k < count($genotypeWithDescriptionArray); $k++) {
-                    if (preg_match("/missense.variant/i", $genotypeWithDescriptionArray[$k])) {
-                        $temp_value_arr = preg_split("/[;, |\n]+/", $genotypeWithDescriptionArray[$k]);
-                        $temp_value = (count($temp_value_arr) > 2 ? $temp_value_arr[0] . "|" . $temp_value_arr[2] : $genotypeWithDescriptionArray[$k]);
-                        echo "<td id=\"pos__" . $segment_arr[$j]["Gene"] . "__" . $key . "__" . $j . "\" style=\"border:1px solid black;min-width:120px;background-color:" . $missense_variant_color_code . "\">" . $temp_value . "</td>";
-                    } else if (preg_match("/frameshift/i", $genotypeWithDescriptionArray[$k])) {
-                        echo "<td id=\"pos__" . $segment_arr[$j]["Gene"] . "__" . $key . "__" . $j . "\" style=\"border:1px solid black;min-width:120px;background-color:" . $frameshift_variant_color_code . "\">" . $genotypeWithDescriptionArray[$k] . "</td>";
-                    } else if (preg_match("/exon.loss/i", $genotypeWithDescriptionArray[$k])) {
-                        echo "<td id=\"pos__" . $segment_arr[$j]["Gene"] . "__" . $key . "__" . $j . "\" style=\"border:1px solid black;min-width:120px;background-color:" . $exon_loss_variant_color_code . "\">" . $genotypeWithDescriptionArray[$k] . "</td>";
-                    } else if (preg_match("/lost/i", $genotypeWithDescriptionArray[$k])) {
-                        $temp_value_arr = preg_split("/[;, |\n]+/", $genotypeWithDescriptionArray[$k]);
-                        $temp_value = (count($temp_value_arr) > 2 ? $temp_value_arr[0] . "|" . $temp_value_arr[2] : $genotypeWithDescriptionArray[$k]);
-                        echo "<td id=\"pos__" . $segment_arr[$j]["Gene"] . "__" . $key . "__" . $j . "\" style=\"border:1px solid black;min-width:120px;background-color:" . $lost_color_code . "\">" . $genotypeWithDescriptionArray[$k] . "</td>";
-                    } else if (preg_match("/gain/i", $genotypeWithDescriptionArray[$k])) {
-                        $temp_value_arr = preg_split("/[;, |\n]+/", $genotypeWithDescriptionArray[$k]);
-                        $temp_value = (count($temp_value_arr) > 2 ? $temp_value_arr[0] . "|" . $temp_value_arr[2] : $genotypeWithDescriptionArray[$k]);
-                        echo "<td id=\"pos__" . $segment_arr[$j]["Gene"] . "__" . $key . "__" . $j . "\" style=\"border:1px solid black;min-width:120px;background-color:" . $gain_color_code . "\">" . $genotypeWithDescriptionArray[$k] . "</td>";
-                    } else if (preg_match("/disruptive/i", $genotypeWithDescriptionArray[$k])) {
-                        echo "<td id=\"pos__" . $segment_arr[$j]["Gene"] . "__" . $key . "__" . $j . "\" style=\"border:1px solid black;min-width:120px;background-color:" . $disruptive_color_code . "\">" . $genotypeWithDescriptionArray[$k] . "</td>";
-                    } else if (preg_match("/conservative/i", $genotypeWithDescriptionArray[$k])) {
-                        echo "<td id=\"pos__" . $segment_arr[$j]["Gene"] . "__" . $key . "__" . $j . "\" style=\"border:1px solid black;min-width:120px;background-color:" . $conservative_color_code . "\">" . $genotypeWithDescriptionArray[$k] . "</td>";
-                    } else if (preg_match("/splice/i", $genotypeWithDescriptionArray[$k])) {
-                        echo "<td id=\"pos__" . $segment_arr[$j]["Gene"] . "__" . $key . "__" . $j . "\" style=\"border:1px solid black;min-width:120px;background-color:" . $splice_color_code . "\">" . $genotypeWithDescriptionArray[$k] . "</td>";
-                    } else if (preg_match("/ref/i", $genotypeWithDescriptionArray[$k])) {
-                        echo "<td id=\"pos__" . $segment_arr[$j]["Gene"] . "__" . $key . "__" . $j . "\" style=\"border:1px solid black;min-width:120px;background-color:" . $ref_color_code . "\">" . $genotypeWithDescriptionArray[$k] . "</td>";
+        echo "<th></th>";
+        echo "</tr>";
+
+        // Table body
+        for ($j = 0; $j < count($result_arr); $j++) {
+            $tr_bgcolor = ($j % 2 ? "#FFFFFF" : "#DDFFDD");
+
+            $row_id_prefix = $result_arr[$j]["Gene"] . "_" . $result_arr[$j]["Chromosome"] . "_" . $j;
+
+            echo "<tr bgcolor=\"" . $tr_bgcolor . "\">";
+            echo "<td><input type=\"checkbox\" id=\"" . $row_id_prefix . "_l" . "\" name=\"" . $row_id_prefix . "_l" . "\" value=\"" . $row_id_prefix . "_l" . "\" onclick=\"checkHighlight(this)\"></td>";
+
+            foreach ($result_arr[$j] as $key => $value) {
+                if ($key != "Gene" && $key != "Chromosome" && $key != "Position" && $key != "Genotype" && $key != "Genotype_Description") {
+                    // Improvement status count section
+                    if (intval($value) > 0) {
+                        echo "<td style=\"border:1px solid black;min-width:80px;\">";
+                        echo "<a href=\"javascript:void(0);\" onclick=\"queryMetadataByImprovementStatusAndGenotypeCombination('" . strval($dataset) . "', '" . strval($key) . "', '" . $result_arr[$j]["Gene"] . "', '" . $result_arr[$j]["Chromosome"] . "', '" . $result_arr[$j]["Position"] . "', '" . $result_arr[$j]["Genotype"] . "', '" . $result_arr[$j]["Genotype_Description"] . "')\">";
+                        echo $value;
+                        echo "</a>";
+                        echo "</td>";
                     } else {
-                        echo "<td id=\"pos__" . $segment_arr[$j]["Gene"] . "__" . $key . "__" . $j . "\" style=\"border:1px solid black;min-width:120px;background-color:#FFFFFF\">" . $genotypeWithDescriptionArray[$k] . "</td>";
+                        echo "<td style=\"border:1px solid black;min-width:80px;\">" . $value . "</td>";
+                    }
+                } elseif ($key == "Gene") {
+                    echo "<td style=\"border:1px solid black;min-width:80px;\">" . $value . "</td>";
+                } elseif ($key == "Chromosome") {
+                    echo "<td style=\"border:1px solid black;min-width:80px;\">" . $value . "</td>";
+                } elseif ($key == "Genotype_Description") {
+                    // Position and genotype_description section
+                    $position_array = preg_split("/[;, \n]+/", $result_arr[$j]["Position"]);
+                    $genotype_description_array = preg_split("/[;, \n]+/", $value);
+                    for ($k = 0; $k < count($genotype_description_array); $k++) {
+
+                        // Change genotype_description background color
+                        $td_bg_color = "#FFFFFF";
+                        if (preg_match("/missense.variant/i", $genotype_description_array[$k])) {
+                            $td_bg_color = $missense_variant_color_code;
+                            $temp_value_arr = preg_split("/[;, |\n]+/", $genotype_description_array[$k]);
+                            $genotype_description_array[$k] = (count($temp_value_arr) > 2 ? $temp_value_arr[0] . "|" . $temp_value_arr[2] : $genotype_description_array[$k]);
+                        } else if (preg_match("/frameshift/i", $genotype_description_array[$k])) {
+                            $td_bg_color = $frameshift_variant_color_code;
+                        } else if (preg_match("/exon.loss/i", $genotype_description_array[$k])) {
+                            $td_bg_color = $exon_loss_variant_color_code;
+                        } else if (preg_match("/lost/i", $genotype_description_array[$k])) {
+                            $td_bg_color = $lost_color_code;
+                            $temp_value_arr = preg_split("/[;, |\n]+/", $genotype_description_array[$k]);
+                            $genotype_description_array[$k] = (count($temp_value_arr) > 2 ? $temp_value_arr[0] . "|" . $temp_value_arr[2] : $genotype_description_array[$k]);
+                        } else if (preg_match("/gain/i", $genotype_description_array[$k])) {
+                            $td_bg_color = $gain_color_code;
+                            $temp_value_arr = preg_split("/[;, |\n]+/", $genotype_description_array[$k]);
+                            $genotype_description_array[$k] = (count($temp_value_arr) > 2 ? $temp_value_arr[0] . "|" . $temp_value_arr[2] : $genotype_description_array[$k]);
+                        } else if (preg_match("/disruptive/i", $genotype_description_array[$k])) {
+                            $td_bg_color = $disruptive_color_code;
+                        } else if (preg_match("/conservative/i", $genotype_description_array[$k])) {
+                            $td_bg_color = $conservative_color_code;
+                        } else if (preg_match("/splice/i", $genotype_description_array[$k])) {
+                            $td_bg_color = $splice_color_code;
+                        } else if (preg_match("/ref/i", $genotype_description_array[$k])) {
+                            $td_bg_color = $ref_color_code;
+                        }
+
+                        echo "<td id=\"" . $row_id_prefix . "_" . $position_array[$k] . "\" style=\"border:1px solid black;min-width:80px;background-color:" . $td_bg_color . "\">" . $genotype_description_array[$k] . "</td>";
                     }
                 }
             }
+
+            echo "<td><input type=\"checkbox\" id=\"" . $row_id_prefix . "_r" . "\" name=\"" . $row_id_prefix . "_r" . "\" value=\"" . $row_id_prefix . "_r" . "\" onclick=\"checkHighlight(this)\"></td>";
+            echo "</tr>";
         }
 
-        echo "<td><input type=\"checkbox\" id=\"no__" . $segment_arr[$j]["Gene"] . "__" . $j . "__back\" onclick=\"checkbox_highlights(this)\"></td>";
-        echo "</tr>";
+        echo "</table>";
+        echo "</div>";
+
+        echo "<div style='margin-top:10px;' align='right'>";
+        echo "<button onclick=\"queryAllCountsByGene('" . $dataset . "', '" . $result_arr[0]["Gene"] . "', '" . implode(";", $improvement_status_array) . "')\" style=\"margin-right:20px;\"> Download (Accession Counts)</button>";
+        echo "<button onclick=\"queryAllByGene('" . $dataset . "', '" . $result_arr[0]["Gene"] . "', '" . implode(";", $improvement_status_array) . "')\"> Download (All Accessions)</button>";
+        echo "</div>";
+
+        echo "<br />";
+        echo "<br />";
+
+    } else {
+        echo "<p>No Allele Catalog data available for " . $gene_array[$i] . " gene!!!</p>";
     }
-
-    echo "</table>";
-    echo "</div>";
-
-    echo "<div style='margin-top:10px;' align='right'>";
-    echo "<button onclick=\"downloadAllCountsByGene('" . $dataset . "', '" . $segment_arr[0]["Gene"] . "', '" . implode(";", $checkboxes) . "')\" style=\"margin-right:20px;\"> Download (Accession Counts)</button>";
-    echo "<button onclick=\"downloadAllByGene('" . $dataset . "', '" . $segment_arr[0]["Gene"] . "', '" . implode(";", $checkboxes) . "')\"> Download (All Accessions)</button>";
-    echo "</div>";
-
-    echo "<br />";
-    echo "<br />";
 }
+
 
 if (count($result_arr) > 0) {
     echo "<br/><br/>";
     echo "<div style='margin-top:10px;' align='center'>";
-    echo "<button type=\"submit\" onclick=\"window.open('https://data.cyverse.org/dav-anon/iplant/home/soykb/Soy1066/Accession_Info.csv')\" style=\"margin-right:20px;\">Download Accession Information</button>";
-    echo "<button onclick=\"downloadAllCountsByMultipleGenes('" . $dataset . "', '" . implode(";", $gene_arr) . "', '" . implode(";", $checkboxes) . "')\" style=\"margin-right:20px;\"> Download All (Accession Counts)</button>";
-    echo "<button onclick=\"downloadAllByMultipleGenes('" . $dataset . "', '" . implode(";", $gene_arr) . "', '" . implode(";", $checkboxes) . "')\" style=\"margin-right:20px;\"> Download All (All Accessions)</button>";
+    echo "<button onclick=\"queryAccessionInformation('" . $dataset . "')\" style=\"margin-right:20px;\">Download Accession Information</button>";
+    echo "<button onclick=\"queryAllCountsByMultipleGenes('" . $dataset . "', '" . implode(";", $gene_array) . "', '" . implode(";", $improvement_status_array) . "')\" style=\"margin-right:20px;\"> Download All (Accession Counts)</button>";
+    echo "<button onclick=\"queryAllByMultipleGenes('" . $dataset . "', '" . implode(";", $gene_array) . "', '" . implode(";", $improvement_status_array) . "')\" style=\"margin-right:20px;\"> Download All (All Accessions)</button>";
     echo "</div>";
     echo "<br/><br/>";
 }
+
 ?>
 
-<script type="text/javascript" language="javascript" src="./js/dataProcessor.js"></script>
-<script type="text/javascript" language="javascript" src="./js/getAccessionsByImpStatusGenePositionGenotypeDesc.js"></script>
-<script type="text/javascript" language="javascript" src="./js/download.js"></script>
+
 <script type="text/javascript" language="javascript" src="./js/modal.js"></script>
-<script type="text/javascript" language="javascript" src="./js/checkboxHighlight.js"></script>
+<script type="text/javascript" language="javascript" src="./js/viewAllByGenes.js"></script>
 
 <?php include '../footer.php'; ?>

@@ -5,7 +5,7 @@ function pdoResultFilter($result){
     $result_arr = array();
 
     if (isset($result) && !empty($result)) {
-        
+
         if (count($result) > 0) {
             for ($i = 0; $i < count($result); $i++) {
                 array_push($result_arr, array());

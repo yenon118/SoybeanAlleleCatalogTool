@@ -1,5 +1,8 @@
+<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+
 <?php
 $TITLE = "Soybean Allele Catalog Tool";
+
 include '../header.php';
 ?>
 
@@ -10,87 +13,67 @@ include '../header.php';
                 <form action="viewAllByGenes.php" method="get" target="_blank">
                     <h2>Search by Gene IDs</h2>
                     <br />
-                    <label for="dataset1"><b>Dataset:</b></label>
-                    <select name="dataset1" id="dataset1">
-                        <option value="Soy775_Allele_Catalog">Soy775 Allele Catalog</option>
-                        <option value="Soy1066_Allele_Catalog" selected>Soy1066 Allele Catalog</option>
+                    <label for="dataset_1"><b>Dataset:</b></label>
+                    <select name="dataset_1" id="dataset_1" onchange="updateSearchByGeneIDs(event)">
+                        <option value="Soy775">Soy775 Allele Catalog</option>
+                        <option value="Soy1066" selected>Soy1066 Allele Catalog</option>
                     </select>
                     <br />
                     <br />
-                    <b>Gene IDs</b><span>&nbsp;(eg Glyma.01G049100 Glyma.01G049200 Glyma.01G049300)</span>
+                    <label><b>Gene IDs:</b></label>
+                    <span id="gene_examples_1" style="font-size:9pt">&nbsp;(eg Glyma.01G049100 Glyma.01G049200 Glyma.01G049300)</span>
                     <br />
-                    <textarea id="gene1" name="gene1" rows="12" cols="50" placeholder="&#10;Please separate each gene into a new line. &#10;&#10;Example:&#10;Glyma.01G049100&#10;Glyma.01G049200&#10;Glyma.01G049300"></textarea>
+                    <textarea id="gene_1" name="gene_1" rows="12" cols="50" placeholder="&#10;Please separate each gene into a new line. &#10;&#10;Example:&#10;Glyma.01G049100&#10;Glyma.01G049200&#10;Glyma.01G049300"></textarea>
                     <br />
                     <br />
-                    <table>
-                        <tr>
-                            <td style="min-width:100px">
-                                <input type="checkbox" id="Soja" name="Soja" value="Soja" checked>
-                                <label for="Soja">Soja</label>
-                            </td>
-                            <td style="min-width:100px">
-                                <input type="checkbox" id="Elite" name="Elite" value="Elite" checked>
-                                <label for="Elite">Elite</label>
-                            </td>
-                            <td style="min-width:100px">
-                                <input type="checkbox" id="Landrace" name="Landrace" value="Landrace" checked>
-                                <label for="Landrace">Landrace</label>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td style="min-width:100px">
-                                <input type="checkbox" id="Cultivar" name="Cultivar" value="Cultivar" checked>
-                                <label for="Cultivar">Cultivar</label>
-                            </td>
-                            <td style="min-width:100px">
-                                <input type="checkbox" id="Imputed" name="Imputed" value="Imputed" hidden>
-                                <label for="Imputed" hidden>Imputed</label>
-                            </td>
-                            <td style="min-width:100px">
-                                <input type="checkbox" id="Unimputed" name="Unimputed" value="Unimputed" hidden>
-                                <label for="Unimputed" hidden>Unimputed</label>
-                            </td>
-                        </tr>
-                    </table>
+                    <div id="improvement_status_div_1">
+                        <label><b>Improvement Status:</b></label>
+                        <br />
+                        <input type="checkbox" id="Soja" name="improvement_status_1[]" value="Soja" checked><label style="margin-right:10px;"> Soja</label>
+                        <input type="checkbox" id="Elite" name="improvement_status_1[]" value="Elite" checked><label style="margin-right:10px;"> Elite</label>
+                        <input type="checkbox" id="Landrace" name="improvement_status_1[]" value="Landrace" checked><label style="margin-right:10px;"> Landrace</label>
+                        <input type="checkbox" id="Cultivar" name="improvement_status_1[]" value="Cultivar" checked><label style="margin-right:10px;"> Cultivar</label>
+                    </div>
                     <br />
-                    <br /><br />
                     <input type="submit" value="Search">
                 </form>
             </td>
             <td width="50%" align="center" valign="top" style="border:1px solid #999999; padding:10px; background-color:#f8f8f8; text-align:left;">
-                <form action="viewAllByAccessionAndGene.php" method="get" target="_blank">
+                <form action="viewAllByAccessionsAndGene.php" method="get" target="_blank">
                     <h2>Search by Accessions and Gene ID</h2>
                     <br />
-                    <label for="dataset2"><b>Dataset:</b></label>
-                    <select name="dataset2" id="dataset2">
-                        <option value="Soy775_Allele_Catalog">Soy775 Allele Catalog</option>
-                        <option value="Soy1066_Allele_Catalog" selected>Soy1066 Allele Catalog</option>
+                    <label for="dataset_2"><b>Dataset:</b></label>
+                    <select name="dataset_2" id="dataset_2" onchange="updateSearchByAccessionsandGeneID(event)">
+                        <option value="Soy775">Soy775 Allele Catalog</option>
+                        <option value="Soy1066" selected>Soy1066 Allele Catalog</option>
                     </select>
                     <br />
                     <br />
-                    <b>Accessions</b><span>&nbsp;(eg HN058_PI458515 PI_479752)</span>
+                    <label><b>Accessions:</b></label>
+                    <span id="accession_examples_2" style="font-size:9pt">&nbsp;(eg HN005_PI404166 HN006_PI407788A)</span>
                     <br />
-                    <textarea id="accession" name="accession" rows="12" cols="50" placeholder="&#10;Please separate each accession into a new line. &#10;&#10;Example:&#10;HN052_PI424079&#10;PI_479752"></textarea>
+                    <textarea id="accession_2" name="accession_2" rows="12" cols="50" placeholder="&#10;Please separate each accession into a new line. &#10;&#10;Example:&#10;HN005_PI404166&#10;HN006_PI407788A"></textarea>
                     <br /><br />
-                    <b>Gene ID</b><span>&nbsp;(One gene name only; eg Glyma.01G049100)</span>
+                    <label><b>Gene ID:</b></label>
+                    <span id="gene_example_2" style="font-size:9pt">&nbsp;(One gene name only; eg Glyma.01G049100)</span>
                     <br />
-                    <input type="text" id="gene2" name="gene2" size="53"></input>
-                    <br /><br />
+                    <input type="text" id="gene_2" name="gene_2" size="55"></input>
                     <br /><br />
                     <input type="submit" value="Search">
                 </form>
             </td>
         </tr>
-        <tr>
-        </tr>
     </table>
-    <br />
-    <br />
 </div>
 
+<br />
+<br />
+
 <div style='margin-top:10px;' align='center'>
-    <button type="submit" onclick="window.open('https://data.cyverse.org/dav-anon/iplant/home/soykb/Soy1066/Accession_Info.csv')" style="margin-right:20px;">Download Accession Information</button>
+    <button onclick="queryAccessionInformation()" style="margin-right:20px;">Download Accession Information</button>
 </div>
+
+<script type="text/javascript" language="javascript" src="./js/index.js"></script>
 
 <script type="text/javascript" language="javascript">
 </script>
