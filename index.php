@@ -73,6 +73,21 @@ include '../header.php';
     <button onclick="queryAccessionInformation()" style="margin-right:20px;">Download Accession Information</button>
 </div>
 
+<br />
+<br />
+
+<div>
+    <table width="100%" cellspacing="14" cellpadding="14">
+        <tr>
+            <td align="center" valign="top" style="border:1px solid #999999; padding:10px; background-color:#f8f8f8; text-align:left;">
+                <h2>If you use the Soybean Allele Catalog Tool in your work, please cite:</h2>
+                <br />
+                <p> Chan YO, Dietz N, Zeng S, Wang J, Flint-Garcia S, Salazar-Vidal MN, Škrabišová M, Bilyeu K, Joshi T: <b> The Allele Catalog Tool: a web-based interactive tool for allele discovery and analysis. </b> BMC Genomics 2023, 24(1):107. </p>
+            </td>
+        </tr>
+    </table>
+</div>
+
 <script type="text/javascript" language="javascript" src="./js/index.js"></script>
 
 <script type="text/javascript" language="javascript">
