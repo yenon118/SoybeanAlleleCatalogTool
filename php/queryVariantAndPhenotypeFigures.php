@@ -42,7 +42,7 @@ for ($i = 0; $i < count($phenotype_array); $i++) {
 $query_str = $query_str . "FROM soykb.act_" . $dataset . "_" . $chromosome . " AS G ";
 $query_str = $query_str . "LEFT JOIN soykb.act_" . $dataset . "_Accession_Mapping AS M ";
 $query_str = $query_str . "ON BINARY G.Accession = M.Accession ";
-$query_str = $query_str . "LEFT JOIN soykb.germplasm AS PH ";
+$query_str = $query_str . "LEFT JOIN soykb.act_Soy1066_Phenotype_Data AS PH ";
 $query_str = $query_str . "ON BINARY M.GRIN_Accession = PH.ACNO ";
 $query_str = $query_str . "WHERE (G.Chromosome = '" . $chromosome . "') ";
 $query_str = $query_str . "AND (G.Position = " . $position . ") ";
