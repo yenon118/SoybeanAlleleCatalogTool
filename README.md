@@ -3,7 +3,7 @@
 <!-- badges: start -->
 <!-- badges: end -->
 
-The Soybean Allele Catalog Tool is a Allele Catalog data visualization tool built using PHP and JavaScript.
+The Soybean Allele Catalog Tool is a Allele Catalog data visualization tool built using PHP, HTML, CSS, and JavaScript.
 
 This repository contains the source code of the Soybean Allele Catalog Tool.
 
