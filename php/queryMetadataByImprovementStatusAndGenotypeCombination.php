@@ -24,29 +24,29 @@ $accession_mapping_table = $table_names["accession_mapping_table"];
 
 // Where clause of query string
 if ($key == "Total") {
-    $query_str = "WHERE (ACD.Position = '" . $position . "') AND (ACD.Genotype = '" . $genotype . "') ";
+	$query_str = "WHERE (ACD.Position = '" . $position . "') AND (ACD.Genotype = '" . $genotype . "') ";
 } elseif ($key == "Cultivar"){
-    $query_str = "WHERE (ACD.Classification = 'NA Cultivar') AND (ACD.Position = '" . $position . "') AND (ACD.Genotype = '" . $genotype . "') ";
+	$query_str = "WHERE (ACD.Classification = 'NA Cultivar') AND (ACD.Position = '" . $position . "') AND (ACD.Genotype = '" . $genotype . "') ";
 } elseif ($key == "G. soja" || $key == "Soja"){
-    $query_str = "WHERE ";
-    $query_str = $query_str . "((ACD." . $key_column . " = 'G. soja') OR (ACD." . $key_column . " = 'Soja')) AND ";
-    $query_str = $query_str . "(ACD.Position = '" . $position . "') AND (ACD.Genotype = '" . $genotype . "') ";
+	$query_str = "WHERE ";
+	$query_str = $query_str . "((ACD." . $key_column . " = 'G. soja') OR (ACD." . $key_column . " = 'Soja')) AND ";
+	$query_str = $query_str . "(ACD.Position = '" . $position . "') AND (ACD.Genotype = '" . $genotype . "') ";
 } else {
-    $query_str = "WHERE ";
-    $query_str = $query_str . "(ACD." . $key_column . " = '" . $key . "') AND ";
-    $query_str = $query_str . "(ACD.Position = '" . $position . "') AND ";
-    $query_str = $query_str . "(ACD.Genotype = '" . $genotype . "') ";
+	$query_str = "WHERE ";
+	$query_str = $query_str . "(ACD." . $key_column . " = '" . $key . "') AND ";
+	$query_str = $query_str . "(ACD.Position = '" . $position . "') AND ";
+	$query_str = $query_str . "(ACD.Genotype = '" . $genotype . "') ";
 }
 
 // Generate query string
 $query_str = getDataQueryString(
-    $dataset,
-    $db,
-    $gff_table,
-    $accession_mapping_table,
-    $gene,
-    $chromosome,
-    $query_str
+	$dataset,
+	$db,
+	$gff_table,
+	$accession_mapping_table,
+	$gene,
+	$chromosome,
+	$query_str
 );
 
 // Make query

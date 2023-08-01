@@ -11,15 +11,15 @@ $gene = $_GET['Gene'];
 $improvement_status = $_GET['Improvement_Status_Array'];
 
 if (is_string($improvement_status)) {
-    $improvement_status_array = preg_split("/[;, \n]+/", $improvement_status);
-    for ($i = 0; $i < count($improvement_status_array); $i++) {
-        $improvement_status_array[$i] = trim($improvement_status_array[$i]);
-    }
+	$improvement_status_array = preg_split("/[;, \n]+/", $improvement_status);
+	for ($i = 0; $i < count($improvement_status_array); $i++) {
+		$improvement_status_array[$i] = trim($improvement_status_array[$i]);
+	}
 } elseif (is_array($improvement_status)) {
-    $improvement_status_array = $improvement_status;
-    for ($i = 0; $i < count($improvement_status_array); $i++) {
-        $improvement_status_array[$i] = trim($improvement_status_array[$i]);
-    }
+	$improvement_status_array = $improvement_status;
+	for ($i = 0; $i < count($improvement_status_array); $i++) {
+		$improvement_status_array[$i] = trim($improvement_status_array[$i]);
+	}
 }
 
 $db = "soykb";
@@ -43,13 +43,13 @@ $gene_result_arr = pdoResultFilter($result);
 
 // Generate query string
 $query_str = getDataQueryString(
-    $dataset,
-    $db,
-    $gff_table,
-    $accession_mapping_table,
-    $gene,
-    $gene_result_arr[0]["Chromosome"],
-    ""
+	$dataset,
+	$db,
+	$gff_table,
+	$accession_mapping_table,
+	$gene,
+	$gene_result_arr[0]["Chromosome"],
+	""
 );
 
 $stmt = $PDO->prepare($query_str);
@@ -59,11 +59,11 @@ $result = $stmt->fetchAll();
 $result_arr = pdoResultFilter($result);
 
 for ($i = 0; $i < count($result_arr); $i++) {
-    if (preg_match("/\+/i", $result_arr[$i]["Imputation"])) {
-        $result_arr[$i]["Imputation"] = "+";
-    } else{
-        $result_arr[$i]["Imputation"] = "";
-    }
+	if (preg_match("/\+/i", $result_arr[$i]["Imputation"])) {
+		$result_arr[$i]["Imputation"] = "+";
+	} else{
+		$result_arr[$i]["Imputation"] = "";
+	}
 }
 
 echo json_encode(array("data" => $result_arr), JSON_INVALID_UTF8_IGNORE);

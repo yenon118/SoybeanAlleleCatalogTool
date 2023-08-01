@@ -2,17 +2,17 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
 <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.js"></script>
 <style>
-    .ui-accordion-header.ui-state-active {
-        background-color: green;
-    }
+	.ui-accordion-header.ui-state-active {
+		background-color: green;
+	}
 </style>
 <script>
-    $(function() {
-        $("#accordion").accordion({
-            active: false,
-            collapsible: true
-        });
-    });
+	$(function() {
+		$("#accordion").accordion({
+			active: false,
+			collapsible: true
+		});
+	});
 </script>
 
 <?php
@@ -180,12 +180,12 @@ echo "</div>";
 
 echo "<br/><br/>";
 echo "<div style='margin-top:10px;' align='center'>";
-echo "<button onclick=\"uncheck_all_genotype()\" style=\"margin-right:20px;\">Uncheck All Genotypes</button>";
-echo "<button onclick=\"check_all_genotype()\" style=\"margin-right:20px;\">Check All Genotypes</button>";
-echo "<button onclick=\"uncheck_all_phenotypes()\" style=\"margin-right:20px;\">Uncheck All Phenotypes</button>";
-echo "<button onclick=\"check_all_phenotypes()\" style=\"margin-right:20px;\">Check All Phenotypes</button>";
-echo "<button onclick=\"queryVariantAndPhenotype()\" style=\"margin-right:20px;\">View Data</button>";
-echo "<button onclick=\"downloadVariantAndPhenotype()\" style=\"margin-right:20px;\">Download Data</button>";
+echo "<button onclick=\"uncheck_all_genotype()\" style=\"margin-right:20px; background-color: #FFFFFF;\">Uncheck All Genotypes</button>";
+echo "<button onclick=\"check_all_genotype()\" style=\"margin-right:20px; background-color: #FFFFFF;\">Check All Genotypes</button>";
+echo "<button onclick=\"uncheck_all_phenotypes()\" style=\"margin-right:20px; background-color: #FFFFFF;\">Uncheck All Phenotypes</button>";
+echo "<button onclick=\"check_all_phenotypes()\" style=\"margin-right:20px; background-color: #FFFFFF;\">Check All Phenotypes</button>";
+echo "<button onclick=\"queryVariantAndPhenotype()\" style=\"margin-right:20px; background-color: #DDFFDD;\">View Data</button>";
+echo "<button onclick=\"downloadVariantAndPhenotype()\" style=\"margin-right:20px; background-color: #FFFFFF;\">Download Data</button>";
 echo "</div>";
 echo "<br/><br/>";
 
@@ -196,11 +196,11 @@ echo "<div id=\"Variant_and_Phenotye_detail_table\" style='width:auto; height:au
 <script type="text/javascript" language="javascript" src="./js/viewVariantAndPhenotype.js"></script>
 
 <script type="text/javascript" language="javascript">
-    var chromosome = <?php if(isset($chromosome)) {echo json_encode($chromosome, JSON_INVALID_UTF8_IGNORE);} else {echo "";}?>;
-    var position = <?php if(isset($position)) {echo json_encode($position, JSON_INVALID_UTF8_IGNORE);} else {echo "";}?>;
-    var dataset = <?php if(isset($dataset)) {echo json_encode($dataset, JSON_INVALID_UTF8_IGNORE);} else {echo "";}?>;
+	var chromosome = <?php if(isset($chromosome)) {echo json_encode($chromosome, JSON_INVALID_UTF8_IGNORE);} else {echo "";}?>;
+	var position = <?php if(isset($position)) {echo json_encode($position, JSON_INVALID_UTF8_IGNORE);} else {echo "";}?>;
+	var dataset = <?php if(isset($dataset)) {echo json_encode($dataset, JSON_INVALID_UTF8_IGNORE);} else {echo "";}?>;
 
-    updateGenotypeInAccordion(dataset);
+	updateGenotypeInAccordion(dataset);
 </script>
 
 <?php include '../footer.php'; ?>

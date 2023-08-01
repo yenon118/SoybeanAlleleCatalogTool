@@ -16,10 +16,10 @@ $accession_mapping_table = $table_names["accession_mapping_table"];
 
 // Query gene from database
 if ($dataset == "Soy1066") {
-    $query_str = "SELECT DISTINCT Name AS Gene FROM " . $db . "." . $gff_table;
-    $query_str = $query_str . " WHERE (Name IS NOT NULL) AND (Name LIKE 'Glyma.01G049%') LIMIT 3;";
+	$query_str = "SELECT DISTINCT Name AS Gene FROM " . $db . "." . $gff_table;
+	$query_str = $query_str . " WHERE (Name IS NOT NULL) AND (Name LIKE 'Glyma.01G049%') LIMIT 3;";
 } else {
-    $query_str = "SELECT DISTINCT Name AS Gene FROM " . $db . "." . $gff_table . " WHERE (Name IS NOT NULL) LIMIT 3;";
+	$query_str = "SELECT DISTINCT Name AS Gene FROM " . $db . "." . $gff_table . " WHERE (Name IS NOT NULL) LIMIT 3;";
 }
 
 // Perform query
@@ -40,9 +40,9 @@ $result = $stmt->fetchAll();
 $improvement_status_result_arr = pdoResultFilter($result);
 
 $result_arr = [
-    "Gene" => $gene_result_arr,
-    "Key_Column" => $key_column,
-    "Improvement_Status" => $improvement_status_result_arr,
+	"Gene" => $gene_result_arr,
+	"Key_Column" => $key_column,
+	"Improvement_Status" => $improvement_status_result_arr,
 ];
 
 echo json_encode(array("data" => $result_arr), JSON_INVALID_UTF8_IGNORE);
