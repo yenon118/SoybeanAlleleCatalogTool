@@ -213,3 +213,13 @@ function queryAccessionInformation() {
 		alert("Accession information of the " + dataset + " dataset is not available!!!");
 	}
 }
+
+
+function viewDemo() {
+	let downloadAnchorNode = document.createElement('a');
+	downloadAnchorNode.setAttribute("href", "https://drive.google.com/file/d/1hpTYAwuRWh5MF9TpgBi721lyyWcDJ_5p/view");
+	downloadAnchorNode.setAttribute("target", "_blank");
+	document.body.appendChild(downloadAnchorNode); // required for firefox
+	downloadAnchorNode.click();
+	downloadAnchorNode.remove();
+}
