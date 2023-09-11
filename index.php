@@ -73,7 +73,7 @@ include '../header.php';
 
 <div style='margin-top:10px;' align='center'>
 	<button onclick="queryAccessionInformation()" style="min-width:250px;background-color:#FFFFFF;">Download Accession Information</button>
-	<button onclick="viewDemo()" style="margin-right:20px;min-width:60px;background-color:#DDFFDD;">Demo</button>
+	<button onclick="viewDemo()" style="margin-right:20px;min-width:150px;background-color:#DDFFDD;">View Demo</button>
 </div>
 
 <br />
