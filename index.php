@@ -17,6 +17,7 @@ include '../header.php';
 					<select name="dataset_1" id="dataset_1" onchange="updateSearchByGeneIDs(event)">
 						<option value="Soy111">Soy111 Allele Catalog</option>
 						<option value="Soy775">Soy775 Allele Catalog</option>
+						<option value="Soy2939">Soy2939 Allele Catalog</option>
 						<option value="Soy1066" selected>Soy1066 Allele Catalog</option>
 					</select>
 					<br />
@@ -47,6 +48,7 @@ include '../header.php';
 					<select name="dataset_2" id="dataset_2" onchange="updateSearchByAccessionsandGeneID(event)">
 						<option value="Soy111">Soy111 Allele Catalog</option>
 						<option value="Soy775">Soy775 Allele Catalog</option>
+						<option value="Soy2939">Soy2939 Allele Catalog</option>
 						<option value="Soy1066" selected>Soy1066 Allele Catalog</option>
 					</select>
 					<br />

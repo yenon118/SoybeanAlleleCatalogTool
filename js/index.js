@@ -67,8 +67,28 @@ function updateSearchByGeneIDs(event) {
 				if (res.hasOwnProperty('Improvement_Status')) {
 					document.getElementById('improvement_status_div_1').innerHTML = "";
 					if (res['Improvement_Status'].length > 0) {
-						if (res['Improvement_Status'][0]['Key'] != null) {
 
+						// Collect all improvement status
+						var improvement_status_array = [];
+						for (let i = 0; i < res['Improvement_Status'].length; i++) {
+							if (res['Improvement_Status'][i]['Key'] != null) {
+								if (res['Improvement_Status'][i]['Key'] == "G. soja") {
+									res['Improvement_Status'][i]['Key'] = "Soja";
+									improvement_status_array.push("Soja");
+								} else if (res['Improvement_Status'][i]['Key'] == "Elite") {
+									improvement_status_array.push("Elite");
+								} else if (res['Improvement_Status'][i]['Key'] == "Landrace") {
+									improvement_status_array.push("Landrace");
+								} else if (res['Improvement_Status'][i]['Key'] == "Genetic") {
+									continue;
+								}
+							}
+						}
+						if (improvement_status_array.length > 0) {
+							improvement_status_array.push("Cultivar");
+						}
+
+						if (improvement_status_array.length > 0) {
 							// If there are improvement status, then add the "Improvement_Status" label
 							var label = document.createElement("label");
 							label.innerHTML = res['Key_Column'];
@@ -76,21 +96,6 @@ function updateSearchByGeneIDs(event) {
 							document.getElementById('improvement_status_div_1').appendChild(label);
 
 							document.getElementById('improvement_status_div_1').appendChild(document.createElement("br"));
-
-							// Choose what improvement status to include for showing in the web page
-							let improvement_status_array = [];
-							for (let i = 0; i < res['Improvement_Status'].length; i++) {
-								if (res['Improvement_Status'][i]['Key'] != null) {
-									if (res['Improvement_Status'][i]['Key'] == "G. soja") {
-										improvement_status_array.push("Soja");
-									} else if (res['Improvement_Status'][i]['Key'] == "Genetic") {
-										continue;
-									} else {
-										improvement_status_array.push(res['Improvement_Status'][i]['Key']);
-									}
-								}
-							}
-							improvement_status_array.push("Cultivar");
 
 							for (let i = 0; i < improvement_status_array.length; i++) {
 								var input_box = document.createElement("input");

@@ -30,7 +30,7 @@ $result = $stmt->fetchAll();
 $gene_result_arr = pdoResultFilter($result);
 
 // Query accession from database
-if ($dataset == "Soy1066" || $dataset == "Soy775") {
+if ($dataset == "Soy2939" || $dataset == "Soy1066" || $dataset == "Soy775") {
 	$query_str = "SELECT DISTINCT SoyKB_Accession AS Accession FROM " . $db . "." . $accession_mapping_table;
 	$query_str = $query_str . " WHERE (SoyKB_Accession IS NOT NULL) AND (SoyKB_Accession LIKE 'HN%') LIMIT 2;";
 } else {
