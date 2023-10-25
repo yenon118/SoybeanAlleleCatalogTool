@@ -8,7 +8,7 @@ $position = $_GET['Position'];
 $dataset = $_GET['Dataset'];
 
 // Construct query string
-$query_str = "SELECT DISTINCT G.Genotype FROM soykb.act_" . $dataset . "_" . $chromosome . " AS G ";
+$query_str = "SELECT DISTINCT G.Genotype FROM soykb.act_" . $dataset . "_genotype_" . $chromosome . " AS G ";
 $query_str = $query_str . "WHERE ((G.Chromosome = '" . $chromosome . "') AND (G.Position = " . $position . ")); ";
 
 
