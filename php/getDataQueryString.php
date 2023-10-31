@@ -14,14 +14,14 @@ function getDataQueryString($dataset, $db, $gff_table, $accession_mapping_table,
 	$query_str = $query_str . "	COMB1.Gene, GENO.Chromosome, ";
 	$query_str = $query_str . "	GROUP_CONCAT(GENO.Position SEPARATOR ' ') AS Position, ";
 	$query_str = $query_str . "	GROUP_CONCAT(GENO.Genotype SEPARATOR ' ') AS Genotype, ";
-	$query_str = $query_str . "	GROUP_CONCAT(CONCAT_WS('|', GENO.Genotype, IFNULL( FUNC2.Functional_Effect, GENO.Category ), FUNC2.Amino_Acid_Change) SEPARATOR ' ') AS Genotype_Description, ";
+	$query_str = $query_str . "	GROUP_CONCAT(CONCAT_WS('|', GENO.Genotype, IFNULL( FUNC2.Functional_Effect, GENO.Category ), FUNC2.Amino_Acid_Change, GENO.Imputation) SEPARATOR ' ') AS Genotype_Description, ";
 	$query_str = $query_str . "	GROUP_CONCAT(IFNULL(GENO.Imputation, '-') SEPARATOR ' ') AS Imputation ";
 	$query_str = $query_str . "	FROM ( ";
 	$query_str = $query_str . "		SELECT DISTINCT FUNC.Chromosome, FUNC.Position, GFF.ID As Gene ";
 	$query_str = $query_str . "		FROM " . $db . "." . $gff_table . " AS GFF ";
 	$query_str = $query_str . "		INNER JOIN " . $db . ".act_" . $dataset . "_func_eff_" . $chromosome . " AS FUNC ";
 	$query_str = $query_str . "		ON (FUNC.Chromosome = GFF.Chromosome) AND (FUNC.Position >= GFF.Start) AND (FUNC.Position <= GFF.End) ";
-	$query_str = $query_str . "		WHERE (GFF.ID=\"" . $gene . "\") AND (GFF.Feature=\"gene\") AND (FUNC.Gene_Name LIKE '%" . $gene . "%') AND (FUNC.Chromosome=\"" . $chromosome . "\") ";	
+	$query_str = $query_str . "		WHERE (GFF.ID=\"" . $gene . "\") AND (GFF.Feature=\"gene\") AND (FUNC.Gene_Name LIKE '%" . $gene . "%') AND (FUNC.Chromosome=\"" . $chromosome . "\") ";
 	$query_str = $query_str . "	) AS COMB1 ";
 	$query_str = $query_str . "	INNER JOIN " . $db . ".act_" . $dataset . "_genotype_" . $chromosome . " AS GENO ";
 	$query_str = $query_str . "	ON (GENO.Chromosome = COMB1.Chromosome) AND (GENO.Position = COMB1.Position) ";
