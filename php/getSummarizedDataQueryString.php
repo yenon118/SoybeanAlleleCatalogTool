@@ -45,7 +45,7 @@ function getSummarizedDataQueryString($dataset, $db, $gff_table, $accession_mapp
 	$query_str = $query_str . "	INNER JOIN " . $db . ".act_" . $dataset . "_genotype_" . $chromosome . " AS GENO ";
 	$query_str = $query_str . "	ON (GENO.Chromosome = COMB1.Chromosome) AND (GENO.Position = COMB1.Position) ";
 	$query_str = $query_str . "	LEFT JOIN " . $db . ".act_" . $dataset . "_func_eff_" . $chromosome . " AS FUNC2 ";
-	$query_str = $query_str . "	ON (FUNC2.Chromosome = GENO.Chromosome) AND (FUNC2.Position = GENO.Position) AND (FUNC2.Allele = GENO.Genotype) ";
+	$query_str = $query_str . "	ON (FUNC2.Chromosome = GENO.Chromosome) AND (FUNC2.Position = GENO.Position) AND (FUNC2.Allele = GENO.Genotype) AND (FUNC2.Gene LIKE CONCAT('%', COMB1.Gene, '%')) ";
 	$query_str = $query_str . "	LEFT JOIN " . $db . "." . $accession_mapping_table . " AS AM ";
 	$query_str = $query_str . "	ON (AM.Accession = GENO.Accession) ";
 	$query_str = $query_str . "	GROUP BY AM.Classification, AM.Improvement_Status, GENO.Accession, AM.SoyKB_Accession, AM.GRIN_Accession, COMB1.Gene, GENO.Chromosome ";

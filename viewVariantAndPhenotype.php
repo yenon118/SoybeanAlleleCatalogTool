@@ -27,10 +27,12 @@ include './php/pdoResultFilter.php';
 <?php
 $chromosome = $_GET['chromosome'];
 $position = $_GET['position'];
+$gene = $_GET['gene'];
 $dataset = $_GET['dataset'];
 
 $chromosome = trim($chromosome);
 $position = intval(trim($position));
+$gene = trim($gene);
 $dataset = trim($dataset);
 ?>
 
@@ -45,6 +47,9 @@ echo "<input type=\"text\" id=\"chromosome_1\" name=\"chromosome_1\" size=\"30\"
 
 echo "<label for=\"position_1\">Position:</label>";
 echo "<input type=\"text\" id=\"position_1\" name=\"position_1\" size=\"30\" value=\"" . $position . "\" style=\"margin-right:50px;\">";
+
+echo "<label for=\"gene_1\">Gene:</label>";
+echo "<input type=\"text\" id=\"gene_1\" name=\"gene_1\" size=\"30\" value=\"" . $gene . "\" style=\"margin-right:50px;\">";
 
 echo "</div>";
 
@@ -198,6 +203,7 @@ echo "<div id=\"Variant_and_Phenotye_detail_table\" style='width:auto; height:au
 <script type="text/javascript" language="javascript">
 	var chromosome = <?php if(isset($chromosome)) {echo json_encode($chromosome, JSON_INVALID_UTF8_IGNORE);} else {echo "";}?>;
 	var position = <?php if(isset($position)) {echo json_encode($position, JSON_INVALID_UTF8_IGNORE);} else {echo "";}?>;
+	var gene = <?php if(isset($gene)) {echo json_encode($gene, JSON_INVALID_UTF8_IGNORE);} else {echo "";}?>;
 	var dataset = <?php if(isset($dataset)) {echo json_encode($dataset, JSON_INVALID_UTF8_IGNORE);} else {echo "";}?>;
 
 	updateGenotypeInAccordion(dataset);

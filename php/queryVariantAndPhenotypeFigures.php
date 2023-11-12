@@ -41,7 +41,7 @@ for ($i = 0; $i < count($phenotype_array); $i++) {
 }
 $query_str = $query_str . "FROM soykb.act_" . $dataset . "_genotype_" . $chromosome . " AS G ";
 $query_str = $query_str . "LEFT JOIN soykb.act_" . $dataset . "_func_eff_" . $chromosome . " AS FUNC ";
-$query_str = $query_str . "ON G.Chromosome = FUNC.Chromosome AND G.Position = FUNC.Position AND G.Genotype = FUNC.Allele ";
+$query_str = $query_str . "ON G.Chromosome = FUNC.Chromosome AND G.Position = FUNC.Position AND G.Genotype = FUNC.Allele AND FUNC.Gene LIKE '%" . $gene . "%' ";
 $query_str = $query_str . "LEFT JOIN soykb.act_" . $dataset . "_Accession_Mapping AS M ";
 $query_str = $query_str . "ON BINARY G.Accession = M.Accession ";
 $query_str = $query_str . "LEFT JOIN soykb.act_" . $dataset . "_Phenotype_Data AS PH ";

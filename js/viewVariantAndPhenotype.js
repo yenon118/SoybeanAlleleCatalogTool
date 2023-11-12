@@ -123,7 +123,7 @@ function check_all_phenotypes() {
 }
 
 
-function constructInfoTable(res, dataset, chromosome, position, genotype_array) {
+function constructInfoTable(res, dataset, chromosome, position, gene, genotype_array) {
 
 	// Create table
 	let detail_table = document.createElement("table");
@@ -144,7 +144,7 @@ function constructInfoTable(res, dataset, chromosome, position, genotype_array) 
 			detail_th.setAttribute("style", "border:1px solid black; min-width:80px; height:18.5px;");
 			var detail_a = document.createElement('a');
 			detail_a.target = "_blank";
-			detail_a.href = "/SoybeanAlleleCatalogTool/viewVariantAndPhenotypeFigures.php?dataset_1=" + dataset + "&chromosome_1=" + chromosome + "&position_1=" + position + "&phenotype_1=" + header_array[i] + "&genotype_1=" + genotype_array.join("%0D%0A");
+			detail_a.href = "/SoybeanAlleleCatalogTool/viewVariantAndPhenotypeFigures.php?dataset_1=" + dataset + "&chromosome_1=" + chromosome + "&position_1=" + position + "&gene_1=" + gene + "&phenotype_1=" + header_array[i] + "&genotype_1=" + genotype_array.join("%0D%0A");
 			detail_a.innerHTML = header_array[i];
 			detail_th.appendChild(detail_a);
 			detail_header_tr.appendChild(detail_th);
@@ -179,6 +179,7 @@ function queryVariantAndPhenotype() {
 
 	let chromosome_1 = document.getElementById('chromosome_1').value;
 	let position_1 = document.getElementById('position_1').value;
+	let gene_1 = document.getElementById('gene_1').value;
 
 	let genotype_ids = document.querySelectorAll('input[id^=genotype]');
 	let genotype_array = [];
@@ -206,6 +207,7 @@ function queryVariantAndPhenotype() {
 			data: {
 				Chromosome: chromosome_1,
 				Position: position_1,
+				Gene: gene_1,
 				Genotype: genotype_array,
 				Phenotype: phenotype_array,
 				Dataset: dataset
@@ -216,7 +218,7 @@ function queryVariantAndPhenotype() {
 
 				if (res.length > 0) {
 					document.getElementById('Variant_and_Phenotye_detail_table').appendChild(
-						constructInfoTable(res, dataset, chromosome_1, position_1, genotype_array)
+						constructInfoTable(res, dataset, chromosome_1, position_1, gene_1, genotype_array)
 					);
 					document.getElementById('Variant_and_Phenotye_detail_table').style.overflow = 'scroll';
 				} else {
@@ -245,6 +247,7 @@ function downloadVariantAndPhenotype() {
 
 	let chromosome_1 = document.getElementById('chromosome_1').value;
 	let position_1 = document.getElementById('position_1').value;
+	let gene_1 = document.getElementById('gene_1').value;
 
 	let genotype_ids = document.querySelectorAll('input[id^=genotype]');
 	let genotype_array = [];
@@ -272,6 +275,7 @@ function downloadVariantAndPhenotype() {
 			data: {
 				Chromosome: chromosome_1,
 				Position: position_1,
+				Gene: gene_1,
 				Genotype: genotype_array,
 				Phenotype: phenotype_array,
 				Dataset: dataset

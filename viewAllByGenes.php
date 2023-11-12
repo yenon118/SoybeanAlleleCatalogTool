@@ -126,7 +126,7 @@ for ($i = 0; $i < count($gene_array); $i++) {
 				$position_array = preg_split("/[;, \n]+/", $value);
 				for ($j = 0; $j < count($position_array); $j++) {
 					// echo "<th style=\"border:1px solid black; min-width:80px;\">" . $position_array[$j] . "</th>";
-					echo "<th style=\"border:1px solid black; min-width:80px;\"><a href=\"/SoybeanAlleleCatalogTool/viewVariantAndPhenotype.php?dataset=" . $dataset . "&chromosome=" . $result_arr[0]["Chromosome"] . "&position=" . $position_array[$j] . "\" target=\"_blank\">" . $position_array[$j] . "</a></th>";
+					echo "<th style=\"border:1px solid black; min-width:80px;\"><a href=\"/SoybeanAlleleCatalogTool/viewVariantAndPhenotype.php?dataset=" . $dataset . "&chromosome=" . $result_arr[0]["Chromosome"] . "&position=" . $position_array[$j] . "&gene=" . $result_arr[0]["Gene"] . "\" target=\"_blank\">" . $position_array[$j] . "</a></th>";
 				}
 			}
 		}
