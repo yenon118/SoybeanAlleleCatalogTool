@@ -205,8 +205,13 @@ for ($i = 0; $i < count($gene_array); $i++) {
 		echo "</div>";
 
 		echo "<div style='margin-top:10px;' align='right'>";
-		echo "<button onclick=\"queryAllCountsByGene('" . $dataset . "', '" . $result_arr[0]["Gene"] . "', '" . implode(";", $improvement_status_array) . "')\" style=\"margin-right:20px;\"> Download (Accession Counts)</button>";
-		echo "<button onclick=\"queryAllByGene('" . $dataset . "', '" . $result_arr[0]["Gene"] . "', '" . implode(";", $improvement_status_array) . "')\"> Download (All Accessions)</button>";
+		if (isset($improvement_status_array)) {
+			echo "<button onclick=\"queryAllCountsByGene('" . $dataset . "', '" . $result_arr[0]["Gene"] . "', '" . implode(";", $improvement_status_array) . "')\" style=\"margin-right:20px;\"> Download (Accession Counts)</button>";
+			echo "<button onclick=\"queryAllByGene('" . $dataset . "', '" . $result_arr[0]["Gene"] . "', '" . implode(";", $improvement_status_array) . "')\"> Download (All Accessions)</button>";
+		} else {
+			echo "<button onclick=\"queryAllCountsByGene('" . $dataset . "', '" . $result_arr[0]["Gene"] . "', '')\" style=\"margin-right:20px;\"> Download (Accession Counts)</button>";
+			echo "<button onclick=\"queryAllByGene('" . $dataset . "', '" . $result_arr[0]["Gene"] . "', '')\"> Download (All Accessions)</button>";
+		}
 		echo "</div>";
 
 		echo "<br />";
@@ -222,8 +227,13 @@ if (count($result_arr) > 0) {
 	echo "<br/><br/>";
 	echo "<div style='margin-top:10px;' align='center'>";
 	echo "<button onclick=\"queryAccessionInformation('" . $dataset . "')\" style=\"margin-right:20px;\">Download Accession Information</button>";
-	echo "<button onclick=\"queryAllCountsByMultipleGenes('" . $dataset . "', '" . implode(";", $gene_array) . "', '" . implode(";", $improvement_status_array) . "')\" style=\"margin-right:20px;\"> Download All (Accession Counts)</button>";
-	echo "<button onclick=\"queryAllByMultipleGenes('" . $dataset . "', '" . implode(";", $gene_array) . "', '" . implode(";", $improvement_status_array) . "')\" style=\"margin-right:20px;\"> Download All (All Accessions)</button>";
+	if (isset($improvement_status_array)) {
+		echo "<button onclick=\"queryAllCountsByMultipleGenes('" . $dataset . "', '" . implode(";", $gene_array) . "', '" . implode(";", $improvement_status_array) . "')\" style=\"margin-right:20px;\"> Download All (Accession Counts)</button>";
+		echo "<button onclick=\"queryAllByMultipleGenes('" . $dataset . "', '" . implode(";", $gene_array) . "', '" . implode(";", $improvement_status_array) . "')\" style=\"margin-right:20px;\"> Download All (All Accessions)</button>";
+	} else {
+		echo "<button onclick=\"queryAllCountsByMultipleGenes('" . $dataset . "', '" . implode(";", $gene_array) . "', '')\" style=\"margin-right:20px;\"> Download All (Accession Counts)</button>";
+		echo "<button onclick=\"queryAllByMultipleGenes('" . $dataset . "', '" . implode(";", $gene_array) . "', '')\" style=\"margin-right:20px;\"> Download All (All Accessions)</button>";
+	}
 	echo "</div>";
 	echo "<br/><br/>";
 }
