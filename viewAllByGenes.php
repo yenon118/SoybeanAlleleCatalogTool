@@ -38,6 +38,7 @@ $dataset = $_GET['dataset_1'];
 $improvement_status_array = $_GET['improvement_status_1'];
 
 if (is_string($gene)) {
+	$gene = trim($gene);
 	$gene_array = preg_split("/[;, \n]+/", $gene);
 	for ($i = 0; $i < count($gene_array); $i++) {
 		$gene_array[$i] = trim($gene_array[$i]);

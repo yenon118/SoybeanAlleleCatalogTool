@@ -27,6 +27,7 @@ $dataset = trim($_GET['dataset_2']);
 $accession = $_GET['accession_2'];
 
 if (is_string($accession)) {
+	$accession = trim($accession);
 	$accession_array = preg_split("/[;, \n]+/", $accession);
 	for ($i = 0; $i < count($accession_array); $i++) {
 		$accession_array[$i] = trim($accession_array[$i]);
