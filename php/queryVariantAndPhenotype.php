@@ -11,26 +11,40 @@ $phenotype = $_GET['Phenotype'];
 $dataset = $_GET['Dataset'];
 
 if (is_string($genotype)) {
-	$genotype_array = preg_split("/[;, \n]+/", $genotype);
-	for ($i = 0; $i < count($genotype_array); $i++) {
-		$genotype_array[$i] = trim($genotype_array[$i]);
+	$genotype = trim($genotype);
+	$temp_genotype_array = preg_split("/[;, \n]+/", $genotype);
+	$genotype_array = array();
+	for ($i = 0; $i < count($temp_genotype_array); $i++) {
+		if (!empty(trim($temp_genotype_array[$i]))) {
+			array_push($genotype_array, trim($temp_genotype_array[$i]));
+		}
 	}
 } elseif (is_array($genotype)) {
-	$genotype_array = $genotype;
-	for ($i = 0; $i < count($genotype_array); $i++) {
-		$genotype_array[$i] = trim($genotype_array[$i]);
+	$temp_genotype_array = $genotype;
+	$genotype_array = array();
+	for ($i = 0; $i < count($temp_genotype_array); $i++) {
+		if (!empty(trim($temp_genotype_array[$i]))) {
+			array_push($genotype_array, trim($temp_genotype_array[$i]));
+		}
 	}
 }
 
 if (is_string($phenotype)) {
-	$phenotype_array = preg_split("/[;, \n]+/", $phenotype);
-	for ($i = 0; $i < count($phenotype_array); $i++) {
-		$phenotype_array[$i] = trim($phenotype_array[$i]);
+	$phenotype = trim($phenotype);
+	$temp_phenotype_array = preg_split("/[;, \n]+/", $phenotype);
+	$phenotype_array = array();
+	for ($i = 0; $i < count($temp_phenotype_array); $i++) {
+		if (!empty(trim($temp_phenotype_array[$i]))) {
+			array_push($phenotype_array, trim($temp_phenotype_array[$i]));
+		}
 	}
 } elseif (is_array($phenotype)) {
-	$phenotype_array = $phenotype;
-	for ($i = 0; $i < count($phenotype_array); $i++) {
-		$phenotype_array[$i] = trim($phenotype_array[$i]);
+	$temp_phenotype_array = $phenotype;
+	$phenotype_array = array();
+	for ($i = 0; $i < count($temp_phenotype_array); $i++) {
+		if (!empty(trim($temp_phenotype_array[$i]))) {
+			array_push($phenotype_array, trim($temp_phenotype_array[$i]));
+		}
 	}
 }
 

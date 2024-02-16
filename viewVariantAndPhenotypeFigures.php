@@ -24,14 +24,21 @@ $gene = trim($gene);
 $phenotype = trim($phenotype);
 
 if (is_string($genotype)) {
-	$genotype_array = preg_split("/[;, \n]+/", $genotype);
-	for ($i = 0; $i < count($genotype_array); $i++) {
-		$genotype_array[$i] = trim($genotype_array[$i]);
+	$genotype = trim($genotype);
+	$temp_genotype_array = preg_split("/[;, \n]+/", $genotype);
+	$genotype_array = array();
+	for ($i = 0; $i < count($temp_genotype_array); $i++) {
+		if (!empty(trim($temp_genotype_array[$i]))) {
+			array_push($genotype_array, trim($temp_genotype_array[$i]));
+		}
 	}
 } elseif (is_array($genotype)) {
-	$genotype_array = $genotype;
-	for ($i = 0; $i < count($genotype_array); $i++) {
-		$genotype_array[$i] = trim($genotype_array[$i]);
+	$temp_genotype_array = $genotype;
+	$genotype_array = array();
+	for ($i = 0; $i < count($temp_genotype_array); $i++) {
+		if (!empty(trim($temp_genotype_array[$i]))) {
+			array_push($genotype_array, trim($temp_genotype_array[$i]));
+		}
 	}
 }
 

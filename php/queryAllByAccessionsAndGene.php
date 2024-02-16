@@ -11,14 +11,21 @@ $gene = trim($_GET['Gene']);
 $accession = $_GET['Accession_Array'];
 
 if (is_string($accession)) {
-	$accession_array = preg_split("/[;, \n]+/", $accession);
-	for ($i = 0; $i < count($accession_array); $i++) {
-		$accession_array[$i] = trim($accession_array[$i]);
+	$accession = trim($accession);
+	$temp_accession_array = preg_split("/[;, \n]+/", $accession);
+	$accession_array = array();
+	for ($i = 0; $i < count($temp_accession_array); $i++) {
+		if (!empty(trim($temp_accession_array[$i]))) {
+			array_push($accession_array, trim($temp_accession_array[$i]));
+		}
 	}
 } elseif (is_array($accession)) {
-	$accession_array = $accession;
-	for ($i = 0; $i < count($accession_array); $i++) {
-		$accession_array[$i] = trim($accession_array[$i]);
+	$temp_accession_array = $accession;
+	$accession_array = array();
+	for ($i = 0; $i < count($temp_accession_array); $i++) {
+		if (!empty(trim($temp_accession_array[$i]))) {
+			array_push($accession_array, trim($temp_accession_array[$i]));
+		}
 	}
 }
 

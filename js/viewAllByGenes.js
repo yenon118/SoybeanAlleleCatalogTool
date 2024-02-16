@@ -22,7 +22,7 @@ function convertJsonToPositionSeparatedCsv(jsonObject) {
 		let tr_keys = Object.keys(jsonObject[i]);
 		for (let j = 0; j < tr_keys.length; j++) {
 			if (tr_keys[j] != "Position" && tr_keys[j] != "Genotype" && tr_keys[j] != "Genotype_Description" && tr_keys[j] != "Imputation") {
-				var value = ((jsonObject[i][tr_keys[j]] === null) || (jsonObject[i][tr_keys[j]] === undefined) || (jsonObject[i][tr_keys[j]] == "")) ? String("\"\"") : String("\"" + jsonObject[i][tr_keys[j]] + "\"");
+				var value = ((jsonObject[i][tr_keys[j]] === null) || (jsonObject[i][tr_keys[j]] === undefined)) ? String("\"\"") : String("\"" + jsonObject[i][tr_keys[j]] + "\"");
 				row_array.push(value);
 			} else if (tr_keys[j] == "Genotype_Description") {
 				let genotype_description_array = String(jsonObject[i][tr_keys[j]]).split(" ");
@@ -30,7 +30,7 @@ function convertJsonToPositionSeparatedCsv(jsonObject) {
 					row_array.push("\"" + genotype_description_array[k] + "\"");
 				}
 			} else if (tr_keys[j] == "Imputation") {
-				var value = ((jsonObject[i][tr_keys[j]] === null) || (jsonObject[i][tr_keys[j]] === undefined) || (jsonObject[i][tr_keys[j]] == "")) ? String("\"\"") : String("\"" + jsonObject[i][tr_keys[j]] + "\"");
+				var value = ((jsonObject[i][tr_keys[j]] === null) || (jsonObject[i][tr_keys[j]] === undefined)) ? String("\"\"") : String("\"" + jsonObject[i][tr_keys[j]] + "\"");
 				row_array.push(value);
 			}
 		}
@@ -63,7 +63,7 @@ function convertJsonToCsv(jsonObject) {
 
 
 function createAndDownloadCsvFile(csvString, filename) {
-	let dataStr = "data:text/csv;charset=utf-8," + encodeURI(csvString);
+	let dataStr = "data:text/csv;charset=utf-8," + encodeURIComponent(csvString);
 	let downloadAnchorNode = document.createElement('a');
 	downloadAnchorNode.setAttribute("href", dataStr);
 	downloadAnchorNode.setAttribute("download", filename + ".csv");

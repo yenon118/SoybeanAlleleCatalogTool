@@ -11,26 +11,40 @@ $gene = $_GET['Gene_Array'];
 $improvement_status = $_GET['Improvement_Status_Array'];
 
 if (is_string($gene)) {
-	$gene_array = preg_split("/[;, \n]+/", $gene);
-	for ($i = 0; $i < count($gene_array); $i++) {
-		$gene_array[$i] = trim($gene_array[$i]);
+	$gene = trim($gene);
+	$temp_gene_array = preg_split("/[;, \n]+/", $gene);
+	$gene_array = array();
+	for ($i = 0; $i < count($temp_gene_array); $i++) {
+		if (!empty(trim($temp_gene_array[$i]))) {
+			array_push($gene_array, trim($temp_gene_array[$i]));
+		}
 	}
 } elseif (is_array($gene)) {
-	$gene_array = $gene;
-	for ($i = 0; $i < count($gene_array); $i++) {
-		$gene_array[$i] = trim($gene_array[$i]);
+	$temp_gene_array = $gene;
+	$gene_array = array();
+	for ($i = 0; $i < count($temp_gene_array); $i++) {
+		if (!empty(trim($temp_gene_array[$i]))) {
+			array_push($gene_array, trim($temp_gene_array[$i]));
+		}
 	}
 }
 
 if (is_string($improvement_status)) {
-	$improvement_status_array = preg_split("/[;, \n]+/", $improvement_status);
-	for ($i = 0; $i < count($improvement_status_array); $i++) {
-		$improvement_status_array[$i] = trim($improvement_status_array[$i]);
+	$improvement_status = trim($improvement_status);
+	$temp_improvement_status_array = preg_split("/[;, \n]+/", $improvement_status);
+	$improvement_status_array = array();
+	for ($i = 0; $i < count($temp_improvement_status_array); $i++) {
+		if (!empty(trim($temp_improvement_status_array[$i]))) {
+			array_push($improvement_status_array, trim($temp_improvement_status_array[$i]));
+		}
 	}
 } elseif (is_array($improvement_status)) {
-	$improvement_status_array = $improvement_status;
-	for ($i = 0; $i < count($improvement_status_array); $i++) {
-		$improvement_status_array[$i] = trim($improvement_status_array[$i]);
+	$temp_improvement_status_array = $improvement_status;
+	$improvement_status_array = array();
+	for ($i = 0; $i < count($temp_improvement_status_array); $i++) {
+		if (!empty(trim($temp_improvement_status_array[$i]))) {
+			array_push($improvement_status_array, trim($temp_improvement_status_array[$i]));
+		}
 	}
 }
 
