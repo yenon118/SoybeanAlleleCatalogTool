@@ -6,6 +6,21 @@ $TITLE = "Soybean Allele Catalog Tool";
 include '../header.php';
 ?>
 
+<a id="demo" type="button" target="_blank" style="display: inline-block;
+	font-size: 12px;
+    text-align: center;
+	height: auto;
+    width: auto; 
+	padding: 10px;
+	border-radius: 5px;
+	color: white;
+    margin-left: 20px;
+    margin-right: 10px;
+	font-weight: bold;
+	background-color: #4ca20b;
+    margin-bottom: 10px;
+	text-decoration: none;" href="assets/documents/SBW2024 Flash talk Bilyeu.pdf">Presentations - SBW2024 Flash Talk - Kristin Bilyeu</a>
+
 <div>
 	<table width="100%" cellspacing="14" cellpadding="14">
 		<tr>
