@@ -2,7 +2,7 @@
 <script src="https://cdn.plot.ly/plotly-2.12.1.min.js"></script>
 
 <?php
-$TITLE = "Soybean Genomic Variations Explorer";
+$TITLE = "Soybean Allele Catalog Tool";
 
 // include '../header.php';
 include '../config.php';
