@@ -1,3 +1,5 @@
 
 /assets/documents/*.PDF
 /assets/documents/*.pdf
+/assets/videos/*.MP4
+/assets/videos/*.mp4
