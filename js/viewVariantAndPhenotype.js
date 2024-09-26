@@ -299,3 +299,13 @@ function downloadVariantAndPhenotype() {
 		alert("Please select genotype to download data!!!");
 	}
 }
+
+
+function download_phenotype_description() {
+	let downloadAnchorNode = document.createElement('a');
+	downloadAnchorNode.setAttribute("href", "./assets/documents/Soybean_phenotype_description.csv");
+	downloadAnchorNode.setAttribute("download", "Soybean_phenotype_description.csv");
+	document.body.appendChild(downloadAnchorNode); // required for firefox
+	downloadAnchorNode.click();
+	downloadAnchorNode.remove();
+}

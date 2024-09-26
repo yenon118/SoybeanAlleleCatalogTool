@@ -1,5 +1,7 @@
 
 /assets/documents/*.PDF
 /assets/documents/*.pdf
+/assets/documents/*.CSV
+/assets/documents/*.csv
 /assets/videos/*.MP4
 /assets/videos/*.mp4

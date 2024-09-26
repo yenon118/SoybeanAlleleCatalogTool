@@ -189,6 +189,7 @@ echo "<button onclick=\"uncheck_all_genotype()\" style=\"margin-right:20px; back
 echo "<button onclick=\"check_all_genotype()\" style=\"margin-right:20px; background-color: #FFFFFF;\">Check All Genotypes</button>";
 echo "<button onclick=\"uncheck_all_phenotypes()\" style=\"margin-right:20px; background-color: #FFFFFF;\">Uncheck All Phenotypes</button>";
 echo "<button onclick=\"check_all_phenotypes()\" style=\"margin-right:20px; background-color: #FFFFFF;\">Check All Phenotypes</button>";
+echo "<button onclick=\"download_phenotype_description()\" style=\"margin-right:20px; background-color: #FFFFFF;\">Download Phenotype Description</button>";
 echo "<button onclick=\"queryVariantAndPhenotype()\" style=\"margin-right:20px; background-color: #DDFFDD;\">View Data</button>";
 echo "<button onclick=\"downloadVariantAndPhenotype()\" style=\"margin-right:20px; background-color: #FFFFFF;\">Download Data</button>";
 echo "</div>";
