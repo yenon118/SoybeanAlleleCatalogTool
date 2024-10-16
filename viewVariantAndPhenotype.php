@@ -143,7 +143,7 @@ echo "<input type=\"checkbox\" id=\"morphology_descriptor_28\" name=\"morphology
 echo "</div>";
 echo "<h3>Other Descriptor</h3>";
 echo "<div>";
-echo "<input type=\"checkbox\" id=\"other_descriptor_0\" name=\"other_descriptor_0\" value=\"ACIMPT\"><label for=\"other_descriptor_0\" style=\"margin-right:10px;\">ACIMPT</label>";
+// echo "<input type=\"checkbox\" id=\"other_descriptor_0\" name=\"other_descriptor_0\" value=\"ACIMPT\"><label for=\"other_descriptor_0\" style=\"margin-right:10px;\">ACIMPT</label>";
 echo "<input type=\"checkbox\" id=\"other_descriptor_1\" name=\"other_descriptor_1\" value=\"YIELD\"><label for=\"other_descriptor_1\" style=\"margin-right:10px;\">YIELD</label>";
 echo "<input type=\"checkbox\" id=\"other_descriptor_2\" name=\"other_descriptor_2\" value=\"FLUORESCE\"><label for=\"other_descriptor_2\" style=\"margin-right:10px;\">FLUORESCE</label>";
 echo "<input type=\"checkbox\" id=\"other_descriptor_3\" name=\"other_descriptor_3\" value=\"LATITUDE\"><label for=\"other_descriptor_3\" style=\"margin-right:10px;\">LATITUDE</label>";
