@@ -14,6 +14,26 @@ $position = trim($_GET['Position']);
 $genotype = trim($_GET['Genotype']);
 $genotype_description = trim($_GET['Genotype_Description']);
 
+
+$dataset = clean_malicious_input($dataset);
+$dataset = preg_replace('/\s+/', '', $dataset);
+
+$key = clean_malicious_input($key);
+$key = preg_replace('/\s+/', '', $key);
+
+$gene = clean_malicious_input($gene);
+$gene = preg_replace('/\s+/', '', $gene);
+
+$chromosome = clean_malicious_input($chromosome);
+$chromosome = preg_replace('/\s+/', '', $chromosome);
+
+$position = clean_malicious_input($position);
+
+$genotype = clean_malicious_input($genotype);
+
+$genotype_description = clean_malicious_input($genotype_description);
+
+
 $db = "soykb";
 
 // Table names and datasets
@@ -25,9 +45,9 @@ $accession_mapping_table = $table_names["accession_mapping_table"];
 // Where clause of query string
 if ($key == "Total") {
 	$query_str = "WHERE (ACD.Position = '" . $position . "') AND (ACD.Genotype = '" . $genotype . "') ";
-} elseif ($key == "Cultivar"){
+} elseif ($key == "Cultivar") {
 	$query_str = "WHERE (ACD.Classification = 'NA Cultivar') AND (ACD.Position = '" . $position . "') AND (ACD.Genotype = '" . $genotype . "') ";
-} elseif ($key == "G. soja" || $key == "Soja"){
+} elseif ($key == "G. soja" || $key == "Soja") {
 	$query_str = "WHERE ";
 	$query_str = $query_str . "((ACD." . $key_column . " = 'G. soja') OR (ACD." . $key_column . " = 'Soja')) AND ";
 	$query_str = $query_str . "(ACD.Position = '" . $position . "') AND (ACD.Genotype = '" . $genotype . "') ";

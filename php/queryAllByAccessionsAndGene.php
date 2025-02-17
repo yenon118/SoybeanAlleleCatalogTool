@@ -6,9 +6,19 @@ include 'getTableNames.php';
 include 'getSummarizedDataQueryString.php';
 include 'getDataQueryString.php';
 
-$dataset = trim($_GET['Dataset']);
-$gene = trim($_GET['Gene']);
+$dataset = $_GET['Dataset'];
+$gene = $_GET['Gene'];
 $accession = $_GET['Accession_Array'];
+
+
+$dataset = clean_malicious_input($dataset);
+$dataset = preg_replace('/\s+/', '', $dataset);
+
+$gene = clean_malicious_input($gene);
+$gene = preg_replace('/\s+/', '', $gene);
+
+$accession = clean_malicious_input($accession);
+
 
 if (is_string($accession)) {
 	$accession = trim($accession);
@@ -51,27 +61,27 @@ $gene_result_arr = pdoResultFilter($result);
 // Generate the where clause
 $query_str = "WHERE (ACD.Accession IN ('";
 for ($i = 0; $i < count($accession_array); $i++) {
-	if($i < (count($accession_array)-1)){
+	if ($i < (count($accession_array) - 1)) {
 		$query_str = $query_str . trim($accession_array[$i]) . "', '";
-	} elseif ($i == (count($accession_array)-1)) {
+	} elseif ($i == (count($accession_array) - 1)) {
 		$query_str = $query_str . trim($accession_array[$i]);
 	}
 }
 $query_str = $query_str . "')) ";
 $query_str = $query_str . "OR (ACD.SoyKB_Accession IN ('";
 for ($i = 0; $i < count($accession_array); $i++) {
-	if($i < (count($accession_array)-1)){
+	if ($i < (count($accession_array) - 1)) {
 		$query_str = $query_str . trim($accession_array[$i]) . "', '";
-	} elseif ($i == (count($accession_array)-1)) {
+	} elseif ($i == (count($accession_array) - 1)) {
 		$query_str = $query_str . trim($accession_array[$i]);
 	}
 }
 $query_str = $query_str . "')) ";
 $query_str = $query_str . "OR (ACD.GRIN_Accession IN ('";
 for ($i = 0; $i < count($accession_array); $i++) {
-	if($i < (count($accession_array)-1)){
+	if ($i < (count($accession_array) - 1)) {
 		$query_str = $query_str . trim($accession_array[$i]) . "', '";
-	} elseif ($i == (count($accession_array)-1)) {
+	} elseif ($i == (count($accession_array) - 1)) {
 		$query_str = $query_str . trim($accession_array[$i]);
 	}
 }
@@ -98,7 +108,7 @@ $result_arr = pdoResultFilter($result);
 for ($i = 0; $i < count($result_arr); $i++) {
 	if (preg_match("/\+/i", $result_arr[$i]["Imputation"])) {
 		$result_arr[$i]["Imputation"] = "+";
-	} else{
+	} else {
 		$result_arr[$i]["Imputation"] = "";
 	}
 }

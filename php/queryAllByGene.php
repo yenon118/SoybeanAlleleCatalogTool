@@ -6,9 +6,19 @@ include 'getTableNames.php';
 include 'getSummarizedDataQueryString.php';
 include 'getDataQueryString.php';
 
-$dataset = trim($_GET['Dataset']);
+$dataset = $_GET['Dataset'];
 $gene = $_GET['Gene'];
 $improvement_status = $_GET['Improvement_Status_Array'];
+
+
+$dataset = clean_malicious_input($dataset);
+$dataset = preg_replace('/\s+/', '', $dataset);
+
+$gene = clean_malicious_input($gene);
+$gene = preg_replace('/\s+/', '', $gene);
+
+$improvement_status = clean_malicious_input($improvement_status);
+
 
 if (is_string($improvement_status)) {
 	$improvement_status = trim($improvement_status);
@@ -68,7 +78,7 @@ $result_arr = pdoResultFilter($result);
 for ($i = 0; $i < count($result_arr); $i++) {
 	if (preg_match("/\+/i", $result_arr[$i]["Imputation"])) {
 		$result_arr[$i]["Imputation"] = "+";
-	} else{
+	} else {
 		$result_arr[$i]["Imputation"] = "";
 	}
 }

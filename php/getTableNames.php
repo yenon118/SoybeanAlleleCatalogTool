@@ -1,6 +1,7 @@
 <?php
 
-function getTableNames($dataset){
+function getTableNames($dataset)
+{
 
 	// Table names and datasets
 	if ($dataset == "Soy775") {

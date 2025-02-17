@@ -4,7 +4,10 @@ include '../../config.php';
 include 'pdoResultFilter.php';
 include 'getTableNames.php';
 
-$dataset = trim($_GET['Dataset']);
+$dataset = $_GET['Dataset'];
+
+$dataset = clean_malicious_input($dataset);
+$dataset = preg_replace('/\s+/', '', $dataset);
 
 $db = "soykb";
 

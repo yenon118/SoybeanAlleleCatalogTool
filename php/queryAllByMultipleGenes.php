@@ -6,25 +6,34 @@ include 'getTableNames.php';
 include 'getSummarizedDataQueryString.php';
 include 'getDataQueryString.php';
 
-$dataset = trim($_GET['Dataset']);
+$dataset = $_GET['Dataset'];
 $gene = $_GET['Gene_Array'];
 $improvement_status = $_GET['Improvement_Status_Array'];
+
+
+$dataset = clean_malicious_input($dataset);
+$dataset = preg_replace('/\s+/', '', $dataset);
+
+$gene = clean_malicious_input($gene);
+
+$improvement_status = clean_malicious_input($improvement_status);
+
 
 if (is_string($gene)) {
 	$gene = trim($gene);
 	$temp_gene_array = preg_split("/[;, \n]+/", $gene);
 	$gene_array = array();
 	for ($i = 0; $i < count($temp_gene_array); $i++) {
-		if (!empty(trim($temp_gene_array[$i]))) {
-			array_push($gene_array, trim($temp_gene_array[$i]));
+		if (!empty(preg_replace('/\s+/', '', $temp_gene_array[$i]))) {
+			array_push($gene_array, preg_replace('/\s+/', '', $temp_gene_array[$i]));
 		}
 	}
 } elseif (is_array($gene)) {
 	$temp_gene_array = $gene;
 	$gene_array = array();
 	for ($i = 0; $i < count($temp_gene_array); $i++) {
-		if (!empty(trim($temp_gene_array[$i]))) {
-			array_push($gene_array, trim($temp_gene_array[$i]));
+		if (!empty(preg_replace('/\s+/', '', $temp_gene_array[$i]))) {
+			array_push($gene_array, preg_replace('/\s+/', '', $temp_gene_array[$i]));
 		}
 	}
 }
@@ -92,13 +101,12 @@ for ($i = 0; $i < count($gene_array); $i++) {
 	} else {
 		$all_counts_array = array_merge((array) $all_counts_array, (array) $result_arr);
 	}
-
 }
 
 for ($i = 0; $i < count($all_counts_array); $i++) {
 	if (preg_match("/\+/i", $all_counts_array[$i]["Imputation"])) {
 		$all_counts_array[$i]["Imputation"] = "+";
-	} else{
+	} else {
 		$all_counts_array[$i]["Imputation"] = "";
 	}
 }

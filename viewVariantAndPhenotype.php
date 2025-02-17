@@ -1,6 +1,10 @@
-<link rel="stylesheet" href="https://code.jquery.com/ui/1.13.1/themes/base/jquery-ui.css"></link>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
-<script src="https://code.jquery.com/ui/1.13.1/jquery-ui.js"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.14.1/themes/base/jquery-ui.css">
+</link>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/ui/1.14.1/jquery-ui.min.js" integrity="sha256-AlTido85uXPlSyyaZNsjJXeCs07eSv3r43kyCVc8ChI=" crossorigin="anonymous"></script>
 <style>
 	.ui-accordion-header.ui-state-active {
 		background-color: green;
@@ -30,10 +34,20 @@ $position = $_GET['position'];
 $gene = $_GET['gene'];
 $dataset = $_GET['dataset'];
 
-$chromosome = trim($chromosome);
-$position = intval(trim($position));
-$gene = trim($gene);
-$dataset = trim($dataset);
+
+$chromosome = clean_malicious_input($chromosome);
+$chromosome = preg_replace('/\s+/', '', $chromosome);
+
+$position = clean_malicious_input($position);
+$position = preg_replace('/\s+/', '', $position);
+
+$gene = clean_malicious_input($gene);
+$gene = preg_replace('/\s+/', '', $gene);
+
+$dataset = clean_malicious_input($dataset);
+$dataset = preg_replace('/\s+/', '', $dataset);
+
+$position = abs(intval(trim($position)));
 ?>
 
 
@@ -202,10 +216,26 @@ echo "<div id=\"Variant_and_Phenotye_detail_table\" style='width:auto; height:au
 <script type="text/javascript" language="javascript" src="./js/viewVariantAndPhenotype.js"></script>
 
 <script type="text/javascript" language="javascript">
-	var chromosome = <?php if(isset($chromosome)) {echo json_encode($chromosome, JSON_INVALID_UTF8_IGNORE);} else {echo "";}?>;
-	var position = <?php if(isset($position)) {echo json_encode($position, JSON_INVALID_UTF8_IGNORE);} else {echo "";}?>;
-	var gene = <?php if(isset($gene)) {echo json_encode($gene, JSON_INVALID_UTF8_IGNORE);} else {echo "";}?>;
-	var dataset = <?php if(isset($dataset)) {echo json_encode($dataset, JSON_INVALID_UTF8_IGNORE);} else {echo "";}?>;
+	var chromosome = <?php if (isset($chromosome)) {
+							echo json_encode($chromosome, JSON_INVALID_UTF8_IGNORE);
+						} else {
+							echo "";
+						} ?>;
+	var position = <?php if (isset($position)) {
+						echo json_encode($position, JSON_INVALID_UTF8_IGNORE);
+					} else {
+						echo "";
+					} ?>;
+	var gene = <?php if (isset($gene)) {
+					echo json_encode($gene, JSON_INVALID_UTF8_IGNORE);
+				} else {
+					echo "";
+				} ?>;
+	var dataset = <?php if (isset($dataset)) {
+						echo json_encode($dataset, JSON_INVALID_UTF8_IGNORE);
+					} else {
+						echo "";
+					} ?>;
 
 	updateGenotypeInAccordion(dataset);
 </script>

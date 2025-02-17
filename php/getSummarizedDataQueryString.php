@@ -1,6 +1,7 @@
 <?php
 
-function getSummarizedDataQueryString($dataset, $db, $gff_table, $accession_mapping_table, $gene, $chromosome, $improvement_status_array, $having = ""){
+function getSummarizedDataQueryString($dataset, $db, $gff_table, $accession_mapping_table, $gene, $chromosome, $improvement_status_array, $having = "")
+{
 
 	// Generate SQL string
 	$query_str = "SELECT ";

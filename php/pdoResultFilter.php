@@ -1,6 +1,7 @@
 <?php
 
-function pdoResultFilter($result){
+function pdoResultFilter($result)
+{
 
 	$result_arr = array();
 

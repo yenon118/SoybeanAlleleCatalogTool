@@ -1,4 +1,4 @@
-<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
 
 <?php
 $TITLE = "Soybean Allele Catalog Tool";
@@ -94,6 +94,11 @@ include '../header.php';
 	<button onclick="queryAccessionInformation()" style="min-width:250px;background-color:#FFFFFF;">Download Accession Information</button>
 	<button onclick="viewDemo()" style="margin-right:20px;min-width:150px;background-color:#DDFFDD;">View Demo</button>
 </div>
+
+<br />
+<br />
+
+<hr />
 
 <br />
 <br />

@@ -1,4 +1,7 @@
-<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
 
 <?php
 $TITLE = "Soybean Allele Catalog Tool";
@@ -10,7 +13,7 @@ include './php/getSummarizedDataQueryString.php';
 include './php/getDataQueryString.php';
 ?>
 
-<link rel="stylesheet" href="css/modal.css" />
+<link rel="stylesheet" href="./css/modal.css" />
 
 
 <!-- Back button -->
@@ -22,9 +25,19 @@ include './php/getDataQueryString.php';
 
 <!-- Get and process the variables -->
 <?php
-$gene = trim($_GET['gene_2']);
-$dataset = trim($_GET['dataset_2']);
+$gene = $_GET['gene_2'];
+$dataset = $_GET['dataset_2'];
 $accession = $_GET['accession_2'];
+
+
+$gene = clean_malicious_input($gene);
+$gene = preg_replace('/\s+/', '', $gene);
+
+$dataset = clean_malicious_input($dataset);
+$dataset = preg_replace('/\s+/', '', $dataset);
+
+$accession = clean_malicious_input($accession);
+
 
 if (is_string($accession)) {
 	$accession = trim($accession);
@@ -83,27 +96,27 @@ $gene_result_arr = pdoResultFilter($result);
 
 $query_str = "WHERE (ACD.Accession IN ('";
 for ($i = 0; $i < count($accession_array); $i++) {
-	if($i < (count($accession_array)-1)){
+	if ($i < (count($accession_array) - 1)) {
 		$query_str = $query_str . trim($accession_array[$i]) . "', '";
-	} elseif ($i == (count($accession_array)-1)) {
+	} elseif ($i == (count($accession_array) - 1)) {
 		$query_str = $query_str . trim($accession_array[$i]);
 	}
 }
 $query_str = $query_str . "')) ";
 $query_str = $query_str . "OR (ACD.SoyKB_Accession IN ('";
 for ($i = 0; $i < count($accession_array); $i++) {
-	if($i < (count($accession_array)-1)){
+	if ($i < (count($accession_array) - 1)) {
 		$query_str = $query_str . trim($accession_array[$i]) . "', '";
-	} elseif ($i == (count($accession_array)-1)) {
+	} elseif ($i == (count($accession_array) - 1)) {
 		$query_str = $query_str . trim($accession_array[$i]);
 	}
 }
 $query_str = $query_str . "')) ";
 $query_str = $query_str . "OR (ACD.GRIN_Accession IN ('";
 for ($i = 0; $i < count($accession_array); $i++) {
-	if($i < (count($accession_array)-1)){
+	if ($i < (count($accession_array) - 1)) {
 		$query_str = $query_str . trim($accession_array[$i]) . "', '";
-	} elseif ($i == (count($accession_array)-1)) {
+	} elseif ($i == (count($accession_array) - 1)) {
 		$query_str = $query_str . trim($accession_array[$i]);
 	}
 }
@@ -127,7 +140,7 @@ $result = $stmt->fetchAll();
 $result_arr = pdoResultFilter($result);
 
 // Render result to a table
-if(isset($result_arr) && is_array($result_arr) && !empty($result_arr)) {
+if (isset($result_arr) && is_array($result_arr) && !empty($result_arr)) {
 
 	// Make table
 	echo "<div style='width:100%; height:auto; border:3px solid #000; overflow:scroll; max-height:1000px;'>";
@@ -240,7 +253,6 @@ if(isset($result_arr) && is_array($result_arr) && !empty($result_arr)) {
 
 	echo "<br />";
 	echo "<br />";
-
 } else {
 	echo "<p>No Allele Catalog data available for this gene!!!</p>";
 }

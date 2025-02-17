@@ -6,6 +6,9 @@ include 'getTableNames.php';
 
 $dataset = trim($_GET['Dataset']);
 
+$dataset = clean_malicious_input($dataset);
+$dataset = preg_replace('/\s+/', '', $dataset);
+
 $db = "soykb";
 
 // Table names and datasets

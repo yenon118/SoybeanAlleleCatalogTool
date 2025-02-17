@@ -12,6 +12,25 @@ $phenotype = $_GET['Phenotype'];
 $dataset = $_GET['Dataset'];
 
 
+$chromosome = clean_malicious_input($chromosome);
+$chromosome = preg_replace('/\s+/', '', $chromosome);
+
+$position = clean_malicious_input($position);
+$position = preg_replace('/\s+/', '', $position);
+
+$gene = clean_malicious_input($gene);
+$gene = preg_replace('/\s+/', '', $gene);
+
+$genotype = clean_malicious_input($genotype);
+
+$phenotype = clean_malicious_input($phenotype);
+
+$dataset = clean_malicious_input($dataset);
+$dataset = preg_replace('/\s+/', '', $dataset);
+
+$position = abs(intval($position));
+
+
 $db = "soykb";
 $genotype_table = "act_" . $dataset . "_genotype_" . $chromosome;
 $functional_effect_table = "act_" . $dataset . "_func_eff_" . $chromosome;
@@ -94,9 +113,9 @@ if (isset($genotype_array)) {
 			if (count($genotype_array) > 0) {
 				$query_str = $query_str . "    AND (G.Genotype IN ('";
 				for ($i = 0; $i < count($genotype_array); $i++) {
-					if($i < (count($genotype_array)-1)){
+					if ($i < (count($genotype_array) - 1)) {
 						$query_str = $query_str . trim($genotype_array[$i]) . "', '";
-					} elseif ($i == (count($genotype_array)-1)) {
+					} elseif ($i == (count($genotype_array) - 1)) {
 						$query_str = $query_str . trim($genotype_array[$i]);
 					}
 				}
@@ -119,9 +138,9 @@ if (isset($genotype_array)) {
 			if (count($genotype_array) > 0) {
 				$query_str = $query_str . "    AND (F.Allele IN ('";
 				for ($i = 0; $i < count($genotype_array); $i++) {
-					if($i < (count($genotype_array)-1)){
+					if ($i < (count($genotype_array) - 1)) {
 						$query_str = $query_str . trim($genotype_array[$i]) . "', '";
-					} elseif ($i == (count($genotype_array)-1)) {
+					} elseif ($i == (count($genotype_array) - 1)) {
 						$query_str = $query_str . trim($genotype_array[$i]);
 					}
 				}
@@ -158,4 +177,5 @@ $result = $stmt->fetchAll();
 $result_arr = pdoResultFilter($result);
 
 echo json_encode(array("data" => $result_arr), JSON_INVALID_UTF8_IGNORE);
+
 ?>

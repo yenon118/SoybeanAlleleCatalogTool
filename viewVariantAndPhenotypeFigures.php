@@ -1,5 +1,8 @@
-<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
-<script src="https://cdn.plot.ly/plotly-2.12.1.min.js"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+<script src="https://cdn.plot.ly/plotly-3.0.0.min.js" charset="utf-8"></script>
 
 <?php
 $TITLE = "Soybean Allele Catalog Tool";
@@ -18,10 +21,25 @@ $genotype = $_GET['genotype_1'];
 $phenotype = $_GET['phenotype_1'];
 $dataset = $_GET['dataset_1'];
 
-$chromosome = trim($chromosome);
-$position = intval(trim($position));
-$gene = trim($gene);
-$phenotype = trim($phenotype);
+
+$chromosome = clean_malicious_input($chromosome);
+$chromosome = preg_replace('/\s+/', '', $chromosome);
+
+$position = clean_malicious_input($position);
+$position = preg_replace('/\s+/', '', $position);
+
+$gene = clean_malicious_input($gene);
+$gene = preg_replace('/\s+/', '', $gene);
+
+$genotype = clean_malicious_input($genotype);
+
+$phenotype = clean_malicious_input($phenotype);
+$phenotype = preg_replace('/\s+/', '', $phenotype);
+
+$dataset = clean_malicious_input($dataset);
+$dataset = preg_replace('/\s+/', '', $dataset);
+
+$position = abs(intval(trim($position)));
 
 if (is_string($genotype)) {
 	$genotype = trim($genotype);
@@ -79,12 +97,36 @@ echo "<br /><br />";
 <script type="text/javascript" language="javascript" src="./js/viewVariantAndPhenotypeFigures.js"></script>
 
 <script type="text/javascript" language="javascript">
-	var chromosome = <?php if(isset($chromosome)) {echo json_encode($chromosome, JSON_INVALID_UTF8_IGNORE);} else {echo "";}?>;
-	var position = <?php if(isset($position)) {echo json_encode($position, JSON_INVALID_UTF8_IGNORE);} else {echo "";}?>;
-	var gene = <?php if(isset($gene)) {echo json_encode($gene, JSON_INVALID_UTF8_IGNORE);} else {echo "";}?>;
-	var phenotype = <?php if(isset($phenotype)) {echo json_encode($phenotype, JSON_INVALID_UTF8_IGNORE);} else {echo "";}?>;
-	var genotype_array = <?php if(isset($genotype_array) && is_array($genotype_array) && !empty($genotype_array)) {echo json_encode($genotype_array, JSON_INVALID_UTF8_IGNORE);} else {echo "";}?>;
-	var dataset = <?php if(isset($dataset)) {echo json_encode($dataset, JSON_INVALID_UTF8_IGNORE);} else {echo "";}?>;
+	var chromosome = <?php if (isset($chromosome)) {
+							echo json_encode($chromosome, JSON_INVALID_UTF8_IGNORE);
+						} else {
+							echo "";
+						} ?>;
+	var position = <?php if (isset($position)) {
+						echo json_encode($position, JSON_INVALID_UTF8_IGNORE);
+					} else {
+						echo "";
+					} ?>;
+	var gene = <?php if (isset($gene)) {
+					echo json_encode($gene, JSON_INVALID_UTF8_IGNORE);
+				} else {
+					echo "";
+				} ?>;
+	var phenotype = <?php if (isset($phenotype)) {
+						echo json_encode($phenotype, JSON_INVALID_UTF8_IGNORE);
+					} else {
+						echo "";
+					} ?>;
+	var genotype_array = <?php if (isset($genotype_array) && is_array($genotype_array) && !empty($genotype_array)) {
+								echo json_encode($genotype_array, JSON_INVALID_UTF8_IGNORE);
+							} else {
+								echo "";
+							} ?>;
+	var dataset = <?php if (isset($dataset)) {
+						echo json_encode($dataset, JSON_INVALID_UTF8_IGNORE);
+					} else {
+						echo "";
+					} ?>;
 
 	if (chromosome && position && genotype_array.length > 0 && phenotype) {
 		$.ajax({
@@ -99,7 +141,7 @@ echo "<br /><br />";
 				Phenotype: phenotype,
 				Dataset: dataset
 			},
-			success: function (response) {
+			success: function(response) {
 				res = JSON.parse(response);
 
 				if (res && phenotype) {
@@ -139,11 +181,11 @@ echo "<br /><br />";
 
 				}
 			},
-			error: function (xhr, status, error) {
+			error: function(xhr, status, error) {
 				console.log('Error with code ' + xhr.status + ': ' + xhr.statusText);
-				document.getElementById('genotype_figure_div').innerText="";
-				document.getElementById('genotype_summary_table_div').innerHTML="";
-				document.getElementById('improvement_status_summary_figure_div').innerHTML="";
+				document.getElementById('genotype_figure_div').innerText = "";
+				document.getElementById('genotype_summary_table_div').innerHTML = "";
+				document.getElementById('improvement_status_summary_figure_div').innerHTML = "";
 				// document.getElementById('improvement_status_figure_div').innerHTML="";
 				// document.getElementById('classification_figure_div').innerHTML="";
 				var p_tag = document.createElement('p');
@@ -164,9 +206,9 @@ echo "<br /><br />";
 			}
 		});
 	} else {
-		document.getElementById('genotype_figure_div').innerText="";
-		document.getElementById('genotype_summary_table_div').innerHTML="";
-		document.getElementById('improvement_status_summary_figure_div').innerHTML="";
+		document.getElementById('genotype_figure_div').innerText = "";
+		document.getElementById('genotype_summary_table_div').innerHTML = "";
+		document.getElementById('improvement_status_summary_figure_div').innerHTML = "";
 		// document.getElementById('improvement_status_figure_div').innerHTML="";
 		// document.getElementById('classification_figure_div').innerHTML="";
 		var p_tag = document.createElement('p');
@@ -185,5 +227,4 @@ echo "<br /><br />";
 		// p_tag.innerHTML = "Classification distribution figure is not available due to lack of data!!!";
 		// document.getElementById('classification_figure_div').appendChild(p_tag);
 	}
-
 </script>

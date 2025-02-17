@@ -1,4 +1,7 @@
-<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
 
 <?php
 $TITLE = "Soybean Allele Catalog Tool";
@@ -10,7 +13,7 @@ include './php/getSummarizedDataQueryString.php';
 include './php/getDataQueryString.php';
 ?>
 
-<link rel="stylesheet" href="css/modal.css" />
+<link rel="stylesheet" href="./css/modal.css" />
 
 
 <!-- Back button -->
@@ -37,21 +40,30 @@ $gene = $_GET['gene_1'];
 $dataset = $_GET['dataset_1'];
 $improvement_status_array = $_GET['improvement_status_1'];
 
+
+$gene = clean_malicious_input($gene);
+
+$dataset = clean_malicious_input($dataset);
+$dataset = preg_replace('/\s+/', '', $dataset);
+
+$improvement_status_array = clean_malicious_input($improvement_status_array);
+
+
 if (is_string($gene)) {
 	$gene = trim($gene);
 	$temp_gene_array = preg_split("/[;, \n]+/", $gene);
 	$gene_array = array();
 	for ($i = 0; $i < count($temp_gene_array); $i++) {
-		if (!empty(trim($temp_gene_array[$i]))) {
-			array_push($gene_array, trim($temp_gene_array[$i]));
+		if (!empty(preg_replace('/\s+/', '', $temp_gene_array[$i]))) {
+			array_push($gene_array, preg_replace('/\s+/', '', $temp_gene_array[$i]));
 		}
 	}
 } elseif (is_array($gene)) {
 	$temp_gene_array = $gene;
 	$gene_array = array();
 	for ($i = 0; $i < count($temp_gene_array); $i++) {
-		if (!empty(trim($temp_gene_array[$i]))) {
-			array_push($gene_array, trim($temp_gene_array[$i]));
+		if (!empty(preg_replace('/\s+/', '', $temp_gene_array[$i]))) {
+			array_push($gene_array, preg_replace('/\s+/', '', $temp_gene_array[$i]));
 		}
 	}
 }
@@ -111,7 +123,7 @@ for ($i = 0; $i < count($gene_array); $i++) {
 	$result_arr = pdoResultFilter($result);
 
 	// Render result to a table
-	if(isset($result_arr) && is_array($result_arr) && !empty($result_arr)) {
+	if (isset($result_arr) && is_array($result_arr) && !empty($result_arr)) {
 
 		// Make table
 		echo "<div style='width:100%; height:auto; border:3px solid #000; overflow:scroll; max-height:1000px;'>";
@@ -223,7 +235,6 @@ for ($i = 0; $i < count($gene_array); $i++) {
 
 		echo "<br />";
 		echo "<br />";
-
 	} else {
 		echo "<p>No Allele Catalog data available for " . $gene_array[$i] . " gene!!!</p>";
 	}
