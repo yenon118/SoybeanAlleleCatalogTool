@@ -186,7 +186,7 @@ function updateSearchByAccessionsandGeneID(event) {
 
 
 function queryAccessionInformation() {
-	var dataset = "Soy1066";
+	var dataset = "Soy2939";
 
 	if (dataset) {
 		$.ajax({
