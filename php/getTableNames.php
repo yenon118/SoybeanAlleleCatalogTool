@@ -24,6 +24,10 @@ function getTableNames($dataset)
 		$key_column = "";
 		$gff_table = "act_Soybean_Wm82a2v1_GFF";
 		$accession_mapping_table = "act_Soy21_Accession_Mapping";
+	} elseif ($dataset == "SoyKorean857") {
+		$key_column = "";
+		$gff_table = "act_Soybean_Wm82a2v1_GFF";
+		$accession_mapping_table = "act_SoyKorean857_Accession_Mapping";
 	} elseif ($dataset == "EU_Soy309") {
 		$key_column = "Improvement_Status";
 		$gff_table = "act_Soybean_Wm82a2v1_GFF";

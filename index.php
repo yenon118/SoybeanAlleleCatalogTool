@@ -34,8 +34,9 @@ include '../header.php';
 						<option value="Soy21">Soy21 Allele Catalog</option>
 						<option value="Soy111">Soy111 Allele Catalog</option>
 						<option value="Soy775">Soy775 Allele Catalog</option>
-						<option value="Soy2939">Soy2939 Allele Catalog</option>
-						<option value="Soy1066" selected>Soy1066 Allele Catalog</option>
+						<option value="Soy2939" selected>Soy2939 Allele Catalog</option>
+						<option value="Soy1066">Soy1066 Allele Catalog</option>
+						<option value="SoyKorean857">SoyKorean857 Allele Catalog</option>
 					</select>
 					<br />
 					<br />
@@ -67,8 +68,9 @@ include '../header.php';
 						<option value="Soy21">Soy21 Allele Catalog</option>
 						<option value="Soy111">Soy111 Allele Catalog</option>
 						<option value="Soy775">Soy775 Allele Catalog</option>
-						<option value="Soy2939">Soy2939 Allele Catalog</option>
-						<option value="Soy1066" selected>Soy1066 Allele Catalog</option>
+						<option value="Soy2939" selected>Soy2939 Allele Catalog</option>
+						<option value="Soy1066">Soy1066 Allele Catalog</option>
+						<option value="SoyKorean857">SoyKorean857 Allele Catalog</option>
 					</select>
 					<br />
 					<br />
