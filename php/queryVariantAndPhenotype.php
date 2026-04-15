@@ -82,92 +82,183 @@ if (isset($phenotype)) {
 }
 
 
-// Construct query string
-$query_str = "SELECT GENO.Chromosome, GENO.Position, GENO.Accession, ";
-$query_str = $query_str . "AM.SoyKB_Accession, AM.GRIN_Accession, AM.Improvement_Status, AM.Classification, ";
-$query_str = $query_str . "GENO.Genotype, ";
-$query_str = $query_str . "COALESCE( FUNC.Functional_Effect, GENO.Category ) AS Functional_Effect, ";
-$query_str = $query_str . "GENO.Imputation ";
+if (
+    $dataset == "SoyKorean857"
+) {
+    // Construct query string
+    $query_str = "SELECT GENO.Chromosome, GENO.Position, GENO.Accession, ";
+    $query_str = $query_str . "AM.Name, AM.Sample_Name, AM.Race, AM.Origin, AM.Location, ";
+    $query_str = $query_str . "GENO.Genotype, ";
+    $query_str = $query_str . "COALESCE( FUNC.Functional_Effect, GENO.Category ) AS Functional_Effect, ";
+    $query_str = $query_str . "GENO.Imputation ";
 
-if (isset($phenotype_array)) {
-	if (!empty($phenotype_array)) {
-		if (is_array($phenotype_array)) {
-			if (count($phenotype_array) > 0) {
-				for ($i = 0; $i < count($phenotype_array); $i++) {
-					$query_str = $query_str . ", PH." . $phenotype_array[$i] . " ";
-				}
-			}
-		}
-	}
+    if (isset($phenotype_array)) {
+        if (!empty($phenotype_array)) {
+            if (is_array($phenotype_array)) {
+                if (count($phenotype_array) > 0) {
+                    for ($i = 0; $i < count($phenotype_array); $i++) {
+                        $query_str = $query_str . ", PH." . $phenotype_array[$i] . " ";
+                    }
+                }
+            }
+        }
+    }
+
+    $query_str = $query_str . "FROM ( ";
+    $query_str = $query_str . "    SELECT G.Chromosome, G.Position, G.Accession, G.Genotype, G.Category, G.Imputation ";
+    $query_str = $query_str . "    FROM " . $db . "." . $genotype_table . " AS G ";
+    $query_str = $query_str . "    WHERE (G.Chromosome = '" . $chromosome . "') ";
+    $query_str = $query_str . "    AND (G.Position = " . $position . ") ";
+
+    if (isset($genotype_array)) {
+        if (!empty($genotype_array)) {
+            if (is_array($genotype_array)) {
+                if (count($genotype_array) > 0) {
+                    $query_str = $query_str . "    AND (G.Genotype IN ('";
+                    for ($i = 0; $i < count($genotype_array); $i++) {
+                        if ($i < (count($genotype_array) - 1)) {
+                            $query_str = $query_str . trim($genotype_array[$i]) . "', '";
+                        } elseif ($i == (count($genotype_array) - 1)) {
+                            $query_str = $query_str . trim($genotype_array[$i]);
+                        }
+                    }
+                    $query_str = $query_str . "')) ";
+                }
+            }
+        }
+    }
+
+    $query_str = $query_str . ") AS GENO ";
+    $query_str = $query_str . "LEFT JOIN ( ";
+    $query_str = $query_str . "    SELECT F.Chromosome, F.Position, F.Allele, F.Gene, F.Functional_Effect ";
+    $query_str = $query_str . "    FROM " . $db . "." . $functional_effect_table . " AS F ";
+    $query_str = $query_str . "    WHERE (F.Chromosome = '" . $chromosome . "') ";
+    $query_str = $query_str . "    AND (F.Position = " . $position . ") ";
+
+    if (isset($genotype_array)) {
+        if (!empty($genotype_array)) {
+            if (is_array($genotype_array)) {
+                if (count($genotype_array) > 0) {
+                    $query_str = $query_str . "    AND (F.Allele IN ('";
+                    for ($i = 0; $i < count($genotype_array); $i++) {
+                        if ($i < (count($genotype_array) - 1)) {
+                            $query_str = $query_str . trim($genotype_array[$i]) . "', '";
+                        } elseif ($i == (count($genotype_array) - 1)) {
+                            $query_str = $query_str . trim($genotype_array[$i]);
+                        }
+                    }
+                    $query_str = $query_str . "')) ";
+                }
+            }
+        }
+    }
+
+    $query_str = $query_str . "    AND (F.Gene LIKE '%" . $gene . "%') ";
+    $query_str = $query_str . ") AS FUNC ";
+    $query_str = $query_str . "ON GENO.Chromosome = FUNC.Chromosome AND GENO.Position = FUNC.Position AND GENO.Genotype = FUNC.Allele ";
+    $query_str = $query_str . "LEFT JOIN " . $db . "." . $accession_mapping_table . " AS AM ";
+    $query_str = $query_str . "ON CAST(GENO.Accession AS BINARY) = CAST(AM.Accession AS BINARY) ";
+
+    if (isset($phenotype_array)) {
+        if (!empty($phenotype_array)) {
+            if (is_array($phenotype_array)) {
+                if (count($phenotype_array) > 0) {
+                    $query_str = $query_str . "LEFT JOIN " . $db . "." . $phenotype_table . " AS PH ";
+                    $query_str = $query_str . "ON CAST(GENO.Accession AS BINARY) = CAST(PH.ACNO AS BINARY) ";
+                }
+            }
+        }
+    }
+
+    $query_str = $query_str . "ORDER BY GENO.Chromosome, GENO.Position, GENO.Genotype; ";
+} else {
+    // Construct query string
+    $query_str = "SELECT GENO.Chromosome, GENO.Position, GENO.Accession, ";
+    $query_str = $query_str . "AM.SoyKB_Accession, AM.GRIN_Accession, AM.Improvement_Status, AM.Classification, ";
+    $query_str = $query_str . "GENO.Genotype, ";
+    $query_str = $query_str . "COALESCE( FUNC.Functional_Effect, GENO.Category ) AS Functional_Effect, ";
+    $query_str = $query_str . "GENO.Imputation ";
+
+    if (isset($phenotype_array)) {
+        if (!empty($phenotype_array)) {
+            if (is_array($phenotype_array)) {
+                if (count($phenotype_array) > 0) {
+                    for ($i = 0; $i < count($phenotype_array); $i++) {
+                        $query_str = $query_str . ", PH." . $phenotype_array[$i] . " ";
+                    }
+                }
+            }
+        }
+    }
+
+    $query_str = $query_str . "FROM ( ";
+    $query_str = $query_str . "    SELECT G.Chromosome, G.Position, G.Accession, G.Genotype, G.Category, G.Imputation ";
+    $query_str = $query_str . "    FROM " . $db . "." . $genotype_table . " AS G ";
+    $query_str = $query_str . "    WHERE (G.Chromosome = '" . $chromosome . "') ";
+    $query_str = $query_str . "    AND (G.Position = " . $position . ") ";
+
+    if (isset($genotype_array)) {
+        if (!empty($genotype_array)) {
+            if (is_array($genotype_array)) {
+                if (count($genotype_array) > 0) {
+                    $query_str = $query_str . "    AND (G.Genotype IN ('";
+                    for ($i = 0; $i < count($genotype_array); $i++) {
+                        if ($i < (count($genotype_array) - 1)) {
+                            $query_str = $query_str . trim($genotype_array[$i]) . "', '";
+                        } elseif ($i == (count($genotype_array) - 1)) {
+                            $query_str = $query_str . trim($genotype_array[$i]);
+                        }
+                    }
+                    $query_str = $query_str . "')) ";
+                }
+            }
+        }
+    }
+
+    $query_str = $query_str . ") AS GENO ";
+    $query_str = $query_str . "LEFT JOIN ( ";
+    $query_str = $query_str . "    SELECT F.Chromosome, F.Position, F.Allele, F.Gene, F.Functional_Effect ";
+    $query_str = $query_str . "    FROM " . $db . "." . $functional_effect_table . " AS F ";
+    $query_str = $query_str . "    WHERE (F.Chromosome = '" . $chromosome . "') ";
+    $query_str = $query_str . "    AND (F.Position = " . $position . ") ";
+
+    if (isset($genotype_array)) {
+        if (!empty($genotype_array)) {
+            if (is_array($genotype_array)) {
+                if (count($genotype_array) > 0) {
+                    $query_str = $query_str . "    AND (F.Allele IN ('";
+                    for ($i = 0; $i < count($genotype_array); $i++) {
+                        if ($i < (count($genotype_array) - 1)) {
+                            $query_str = $query_str . trim($genotype_array[$i]) . "', '";
+                        } elseif ($i == (count($genotype_array) - 1)) {
+                            $query_str = $query_str . trim($genotype_array[$i]);
+                        }
+                    }
+                    $query_str = $query_str . "')) ";
+                }
+            }
+        }
+    }
+
+    $query_str = $query_str . "    AND (F.Gene LIKE '%" . $gene . "%') ";
+    $query_str = $query_str . ") AS FUNC ";
+    $query_str = $query_str . "ON GENO.Chromosome = FUNC.Chromosome AND GENO.Position = FUNC.Position AND GENO.Genotype = FUNC.Allele ";
+    $query_str = $query_str . "LEFT JOIN " . $db . "." . $accession_mapping_table . " AS AM ";
+    $query_str = $query_str . "ON CAST(GENO.Accession AS BINARY) = CAST(AM.Accession AS BINARY) ";
+
+    if (isset($phenotype_array)) {
+        if (!empty($phenotype_array)) {
+            if (is_array($phenotype_array)) {
+                if (count($phenotype_array) > 0) {
+                    $query_str = $query_str . "LEFT JOIN " . $db . "." . $phenotype_table . " AS PH ";
+                    $query_str = $query_str . "ON CAST(AM.GRIN_Accession AS BINARY) = CAST(PH.ACNO AS BINARY) ";
+                }
+            }
+        }
+    }
+
+    $query_str = $query_str . "ORDER BY GENO.Chromosome, GENO.Position, GENO.Genotype; ";
 }
-
-$query_str = $query_str . "FROM ( ";
-$query_str = $query_str . "    SELECT G.Chromosome, G.Position, G.Accession, G.Genotype, G.Category, G.Imputation ";
-$query_str = $query_str . "    FROM " . $db . "." . $genotype_table . " AS G ";
-$query_str = $query_str . "    WHERE (G.Chromosome = '" . $chromosome . "') ";
-$query_str = $query_str . "    AND (G.Position = " . $position . ") ";
-
-if (isset($genotype_array)) {
-	if (!empty($genotype_array)) {
-		if (is_array($genotype_array)) {
-			if (count($genotype_array) > 0) {
-				$query_str = $query_str . "    AND (G.Genotype IN ('";
-				for ($i = 0; $i < count($genotype_array); $i++) {
-					if ($i < (count($genotype_array) - 1)) {
-						$query_str = $query_str . trim($genotype_array[$i]) . "', '";
-					} elseif ($i == (count($genotype_array) - 1)) {
-						$query_str = $query_str . trim($genotype_array[$i]);
-					}
-				}
-				$query_str = $query_str . "')) ";
-			}
-		}
-	}
-}
-
-$query_str = $query_str . ") AS GENO ";
-$query_str = $query_str . "LEFT JOIN ( ";
-$query_str = $query_str . "    SELECT F.Chromosome, F.Position, F.Allele, F.Gene, F.Functional_Effect ";
-$query_str = $query_str . "    FROM " . $db . "." . $functional_effect_table . " AS F ";
-$query_str = $query_str . "    WHERE (F.Chromosome = '" . $chromosome . "') ";
-$query_str = $query_str . "    AND (F.Position = " . $position . ") ";
-
-if (isset($genotype_array)) {
-	if (!empty($genotype_array)) {
-		if (is_array($genotype_array)) {
-			if (count($genotype_array) > 0) {
-				$query_str = $query_str . "    AND (F.Allele IN ('";
-				for ($i = 0; $i < count($genotype_array); $i++) {
-					if ($i < (count($genotype_array) - 1)) {
-						$query_str = $query_str . trim($genotype_array[$i]) . "', '";
-					} elseif ($i == (count($genotype_array) - 1)) {
-						$query_str = $query_str . trim($genotype_array[$i]);
-					}
-				}
-				$query_str = $query_str . "')) ";
-			}
-		}
-	}
-}
-
-$query_str = $query_str . "    AND (F.Gene LIKE '%" . $gene . "%') ";
-$query_str = $query_str . ") AS FUNC ";
-$query_str = $query_str . "ON GENO.Chromosome = FUNC.Chromosome AND GENO.Position = FUNC.Position AND GENO.Genotype = FUNC.Allele ";
-$query_str = $query_str . "LEFT JOIN " . $db . "." . $accession_mapping_table . " AS AM ";
-$query_str = $query_str . "ON CAST(GENO.Accession AS BINARY) = CAST(AM.Accession AS BINARY) ";
-
-if (isset($phenotype_array)) {
-	if (!empty($phenotype_array)) {
-		if (is_array($phenotype_array)) {
-			if (count($phenotype_array) > 0) {
-				$query_str = $query_str . "LEFT JOIN " . $db . "." . $phenotype_table . " AS PH ";
-				$query_str = $query_str . "ON CAST(AM.GRIN_Accession AS BINARY) = CAST(PH.ACNO AS BINARY) ";
-			}
-		}
-	}
-}
-
-$query_str = $query_str . "ORDER BY GENO.Chromosome, GENO.Position, GENO.Genotype; ";
 
 
 $stmt = $PDO->prepare($query_str);

@@ -34,7 +34,7 @@ function getTableNames($dataset)
 		$accession_mapping_table = "act_EU_Soy309_Accession_Mapping";
 	} else {
 		$key_column = "";
-		$gff_table = "";
+		$gff_table = "act_Soybean_Wm82a2v1_GFF";
 		$accession_mapping_table = $dataset;
 	}
 

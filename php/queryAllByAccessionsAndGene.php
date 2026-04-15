@@ -68,24 +68,29 @@ for ($i = 0; $i < count($accession_array); $i++) {
 	}
 }
 $query_str = $query_str . "')) ";
-$query_str = $query_str . "OR (ACD.SoyKB_Accession IN ('";
-for ($i = 0; $i < count($accession_array); $i++) {
-	if ($i < (count($accession_array) - 1)) {
-		$query_str = $query_str . trim($accession_array[$i]) . "', '";
-	} elseif ($i == (count($accession_array) - 1)) {
-		$query_str = $query_str . trim($accession_array[$i]);
-	}
+
+if (
+    $dataset == "Soy2939" || $dataset == "Soy1066" || $dataset == "Soy775" || $dataset == "Soy111" || $dataset == "Soy21" || $dataset == "EU_Soy309"
+) {
+    $query_str = $query_str . "OR (ACD.SoyKB_Accession IN ('";
+    for ($i = 0; $i < count($accession_array); $i++) {
+        if ($i < (count($accession_array) - 1)) {
+            $query_str = $query_str . trim($accession_array[$i]) . "', '";
+        } elseif ($i == (count($accession_array) - 1)) {
+            $query_str = $query_str . trim($accession_array[$i]);
+        }
+    }
+    $query_str = $query_str . "')) ";
+    $query_str = $query_str . "OR (ACD.GRIN_Accession IN ('";
+    for ($i = 0; $i < count($accession_array); $i++) {
+        if ($i < (count($accession_array) - 1)) {
+            $query_str = $query_str . trim($accession_array[$i]) . "', '";
+        } elseif ($i == (count($accession_array) - 1)) {
+            $query_str = $query_str . trim($accession_array[$i]);
+        }
+    }
+    $query_str = $query_str . "')) ";
 }
-$query_str = $query_str . "')) ";
-$query_str = $query_str . "OR (ACD.GRIN_Accession IN ('";
-for ($i = 0; $i < count($accession_array); $i++) {
-	if ($i < (count($accession_array) - 1)) {
-		$query_str = $query_str . trim($accession_array[$i]) . "', '";
-	} elseif ($i == (count($accession_array) - 1)) {
-		$query_str = $query_str . trim($accession_array[$i]);
-	}
-}
-$query_str = $query_str . "')) ";
 
 // Generate query string
 $query_str = getDataQueryString(

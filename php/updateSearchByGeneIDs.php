@@ -36,14 +36,24 @@ $result = $stmt->fetchAll();
 $gene_result_arr = pdoResultFilter($result);
 
 // Query improvement status from database
-$query_str = "SELECT DISTINCT Improvement_Status AS `Key` FROM " . $db . "." . $accession_mapping_table . ";";
+if (
+    $dataset == "Soy2939" || $dataset == "Soy1066" || $dataset == "Soy775" || $dataset == "Soy111" || $dataset == "Soy21" || $dataset == "EU_Soy309"
+) {
+    $query_str = "SELECT DISTINCT Improvement_Status AS `Key` FROM " . $db . "." . $accession_mapping_table . ";";
 
-// Perform query
-$stmt = $PDO->prepare($query_str);
-$stmt->execute();
-$result = $stmt->fetchAll();
+    // Perform query
+    $stmt = $PDO->prepare($query_str);
+    $stmt->execute();
+    $result = $stmt->fetchAll();
 
-$improvement_status_result_arr = pdoResultFilter($result);
+    $improvement_status_result_arr = pdoResultFilter($result);
+} else {
+    $improvement_status_result_arr = [
+        0 => [
+            "Key" => ""
+        ]
+    ];
+}
 
 $result_arr = [
 	"Gene" => $gene_result_arr,
